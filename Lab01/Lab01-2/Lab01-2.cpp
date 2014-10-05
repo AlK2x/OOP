@@ -26,14 +26,14 @@ int StringToInt(const char * str, bool & err)
 
 int main(int argc, char* argv[])
 {
-	const int lowBound = 1;
+	const int LOWER_BOUND = 1;
 	int upperBound = 1000;
 	bool hasError;
 
 	if (argc >= 2)
 	{
 		int inputValue = StringToInt(argv[1], hasError);
-		if (hasError || inputValue <= lowBound)
+		if (hasError || inputValue <= LOWER_BOUND)
 		{
 			printf("Invalid argument. It must be a digit greather then one.\n");
 			return 1;
@@ -42,7 +42,7 @@ int main(int argc, char* argv[])
 		upperBound = inputValue;
 	}
 
-	for (int i = lowBound; i <= upperBound; ++i)
+	for (int i = LOWER_BOUND; i <= upperBound; ++i)
 	{
 		if ((i % SumDigits(i)) == 0)
 		{

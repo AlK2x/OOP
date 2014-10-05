@@ -4,17 +4,20 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-	int i;
-	for (i = 100; i >= 1; i -= 2)
+	const int LOWER_BOUND = 3;
+	const int UPPER_BOUND = 107;
+	const int STEP = 3;
+
+	for (int i = UPPER_BOUND / STEP * STEP; i >= LOWER_BOUND; i -= STEP)
 	{
 		printf("%d", i);
-		if (i != 2)
+		if (i - LOWER_BOUND >= STEP)
 		{
 			printf(", ");
 		}
 	}
-	printf("\n");
 
+	printf("\n");
 	return 0;
 }
 
