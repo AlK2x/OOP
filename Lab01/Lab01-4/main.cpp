@@ -1,4 +1,5 @@
 #include <iostream>
+#include "common.h"
 
 // handle overflow
 // handle incorrect parameter

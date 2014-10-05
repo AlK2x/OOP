@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string.h>
+#include "common.h"
 
 // devide by zero
 // overflow operation
@@ -26,29 +27,36 @@ char ReadStatement(char* str, bool & err)
 	return ch;
 }
 
-double ComputeResult(double & leftArg, char statement, double rightArg)
+int ComputeResult(double & leftArg, char statement, double rightArg)
 {
-	int result = 1;
+	int result = OK;
 
 	if (statement == '+')
 	{
-		leftArg = leftArg + rightArg;
+		leftArg += rightArg;
 	}
 	else if (statement == '-')
 	{
-		leftArg = leftArg - rightArg;
+		leftArg -= rightArg;
 	}
 	else if (statement == '*')
 	{
-		leftArg = leftArg * rightArg;
+		leftArg *= rightArg;
 	}
 	else if (statement == '/')
 	{
-		leftArg = leftArg / rightArg;
+		if (rightArg == 0)
+		{
+			result = DEVIDE_BY_ZERO;
+		}
+		else
+		{
+			leftArg /= rightArg;
+		}
 	}
 	else
 	{
-		result = 0;
+		result = INCORRECT_PARAMETER;
 	}
 
 	return result;
