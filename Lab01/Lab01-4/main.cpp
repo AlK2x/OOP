@@ -13,6 +13,13 @@ int StringToInt(const char * str, bool & err)
 	return param;
 }
 
+int SafeAddition(int firstTerm, int secondTerm, bool & overflow)
+{
+	overflow = (firstTerm > 0 && INT_MAX - secondTerm < firstTerm) || (firstTerm < 0 && INT_MIN - secondTerm > firstTerm);
+
+	return firstTerm + secondTerm;
+}
+
 int main(int argc, char* argv[])
 {
 	const int FIBONACHI_FIRST = 1;
@@ -38,11 +45,17 @@ int main(int argc, char* argv[])
 	long firstFibNum = FIBONACHI_FIRST;
 	long secondFibNum = FIBONACHI_SECOND;
 	int fibCounter = 0;
+	bool overflow;
 
 	while (inputNum >= fibResult)
 	{
 		printf("%6u, ", secondFibNum);
-		fibResult = firstFibNum + secondFibNum;
+		fibResult = SafeAddition(firstFibNum, secondFibNum, overflow);
+		if (overflow)
+		{
+			break;
+		}
+
 		secondFibNum = firstFibNum;
 		firstFibNum = fibResult;
 		++fibCounter;
