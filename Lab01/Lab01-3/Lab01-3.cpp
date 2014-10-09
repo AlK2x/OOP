@@ -6,8 +6,6 @@
 // overflow operation
 // think about best structure
 
-const char NO_STATEMENT = '\0';
-
 double StringToDouble(const char * str, bool & err)
 {
 	char * pLastChar = NULL;
@@ -18,16 +16,25 @@ double StringToDouble(const char * str, bool & err)
 
 char ReadStatement(char* str, bool & err)
 {
-	char ch = NO_STATEMENT;
-	if (strlen(str) == 1)
+	char ch = INCORRECT_PARAMETER;
+	err = strlen(str) != 1;
+	if (!err)
 	{
 		ch = str[0];
+		switch (ch)
+		{
+		case '+': case '-': case '*': case '/':
+			break;
+		default:
+			err = true;
+			break;
+		}
 	}
 
 	return ch;
 }
 
-int ComputeResult(double & leftArg, char statement, double rightArg)
+char ComputeResult(double & leftArg, char statement, double rightArg)
 {
 	int result = OK;
 
@@ -62,6 +69,18 @@ int ComputeResult(double & leftArg, char statement, double rightArg)
 	return result;
 }
 
+void printErrorMessage(char errorCode, int errorPosition)
+{
+	if (errorCode == DEVIDE_BY_ZERO)
+	{
+		printf("Devide by zero in %d position.", errorPosition);
+	}
+	else if (errorCode == INCORRECT_PARAMETER)
+	{
+		printf("Unknown %d parameter. Only +, -, *, / allowed", errorPosition);
+	}
+}
+
 int main(int argc, char* argv[])
 {
 	if (argc <= 1)
@@ -91,17 +110,23 @@ int main(int argc, char* argv[])
 			argument = StringToDouble(argv[i], err);
 			if (err)
 			{
-				printf("Argument #%d is not a number\n.", i);
+				printf("Argument #%d is not a number\n", i);
 				return 1;
 			}
-			ComputeResult(result, statement, argument);
+
+			int computeErrorCode = ComputeResult(result, statement, argument);
+			if (computeErrorCode != OK)
+			{
+				printErrorMessage(computeErrorCode, i);
+				return 1;
+			}
 		}
 		else
 		{
 			statement = ReadStatement(argv[i], err);
-			if (err)
+			if (err || statement == INCORRECT_PARAMETER)
 			{
-				printf("Argument #%s is not a statement\n.", argv[i]);
+				printErrorMessage(statement, i);
 				return 1;
 			}
 		}

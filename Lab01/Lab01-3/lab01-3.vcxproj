@@ -42,6 +42,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <TargetName>eval</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -81,6 +82,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="test.bat" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="one.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
