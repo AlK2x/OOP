@@ -1,10 +1,6 @@
 #include <iostream>
 #include "common.h"
 
-// handle overflow
-// handle incorrect parameter
-// think about the best computation
-
 int StringToInt(const char * str, bool & err)
 {
 	char * pLastChar = NULL;
@@ -49,11 +45,12 @@ int main(int argc, char* argv[])
 
 	while (inputNum >= fibResult)
 	{
-		printf("%6u, ", secondFibNum);
+		printf("%10u ", secondFibNum);
 		fibResult = SafeAddition(firstFibNum, secondFibNum, overflow);
 		if (overflow)
 		{
-			break;
+			printf("\n");
+			return 0;
 		}
 
 		secondFibNum = firstFibNum;
