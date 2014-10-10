@@ -2,9 +2,9 @@
 #include <string.h>
 #include "common.h"
 
-// devide by zero
-// overflow operation
-// think about best structure
+// style
+// devide main
+// enum for errors double
 
 double StringToDouble(const char * str, bool & err)
 {

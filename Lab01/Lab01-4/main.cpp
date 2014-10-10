@@ -1,6 +1,10 @@
 #include <iostream>
 #include "common.h"
 
+// last digit on big nubers(max bound)
+// names of variables prev, next, current
+// print fibonacci in functions
+
 int StringToInt(const char * str, bool & err)
 {
 	char * pLastChar = NULL;
@@ -16,6 +20,37 @@ int SafeAddition(int firstTerm, int secondTerm, bool & overflow)
 	return firstTerm + secondTerm;
 }
 
+void PrintFibonacciNumbers(int noGreatherThen, int digitsInLine)
+{
+	long current = 1;
+	long previous = 1;
+	int next = current + previous;
+	int fibCounter = 1;
+
+	printf("%10u ", previous);
+
+	while (noGreatherThen >= next)
+	{
+		bool overflow;
+		next = SafeAddition(current, previous, overflow);
+		printf("%10u ", current);
+		if (overflow)
+		{
+			printf("\n");
+			return;
+		}
+
+		previous = current;
+		current = next;
+		++fibCounter;
+		if ((fibCounter % digitsInLine) == 0)
+		{
+			printf("\n");
+		}
+	}
+	printf("\n");
+}
+
 int main(int argc, char* argv[])
 {
 	const int FIBONACHI_FIRST = 1;
@@ -29,7 +64,6 @@ int main(int argc, char* argv[])
 	}
 
 	bool err;
-
 	long inputNum = StringToInt(argv[1], err);
 	if (err)
 	{
@@ -37,32 +71,7 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	long fibResult = FIBONACHI_FIRST + FIBONACHI_SECOND;
-	long firstFibNum = FIBONACHI_FIRST;
-	long secondFibNum = FIBONACHI_SECOND;
-	int fibCounter = 0;
-	bool overflow;
-
-	while (inputNum >= fibResult)
-	{
-		printf("%10u ", secondFibNum);
-		fibResult = SafeAddition(firstFibNum, secondFibNum, overflow);
-		if (overflow)
-		{
-			printf("\n");
-			return 0;
-		}
-
-		secondFibNum = firstFibNum;
-		firstFibNum = fibResult;
-		++fibCounter;
-		if ((fibCounter % NUMBERS_IN_LINE) == 0)
-		{
-			printf("\n");
-		}
-	}
-
-	printf("%6u \n", secondFibNum);
+	PrintFibonacciNumbers(inputNum, NUMBERS_IN_LINE);
 
 	return 0;
 }
