@@ -6,38 +6,45 @@
 // devide main
 // enum for errors double
 
-double StringToDouble(const char * str, bool & err)
+enum Error
+{
+	NO_ERROR,
+	INCORRECT_PARAMETER,
+	DIVIDE_BY_ZERO,
+	NOT_NUMBER
+};
+
+double StringToDouble(const char * str, Error & err)
 {
 	char * pLastChar = NULL;
 	double param = strtod(str, &pLastChar);
-	err = ((*str == '\0') || (*pLastChar != '\0'));
+	err = ((*str == '\0') || (*pLastChar != '\0')) ? INCORRECT_PARAMETER : NO_ERROR;
 	return param;
 }
 
-char ReadStatement(char* str, bool & err)
+char ReadStatement(char* str, Error & err)
 {
-	char ch = INCORRECT_PARAMETER;
-	err = strlen(str) != 1;
-	if (!err)
+	err = INCORRECT_PARAMETER;
+	char statement = '\0';
+	if (strlen(str) > 0)
 	{
-		ch = str[0];
-		switch (ch)
+		statement = str[0];
+		switch (statement)
 		{
 		case '+': case '-': case '*': case '/':
+			err = NO_ERROR;
 			break;
 		default:
-			err = true;
 			break;
 		}
 	}
 
-	return ch;
+	return statement;
 }
 
-char ComputeResult(double & leftArg, char statement, double rightArg)
+Error ComputeResult(double & leftArg, char statement, double rightArg)
 {
-	int result = OK;
-
+	Error result = NO_ERROR;
 	if (statement == '+')
 	{
 		leftArg += rightArg;
@@ -54,7 +61,7 @@ char ComputeResult(double & leftArg, char statement, double rightArg)
 	{
 		if (rightArg == 0)
 		{
-			result = DEVIDE_BY_ZERO;
+			result = DIVIDE_BY_ZERO;
 		}
 		else
 		{
@@ -69,9 +76,9 @@ char ComputeResult(double & leftArg, char statement, double rightArg)
 	return result;
 }
 
-void printErrorMessage(char errorCode, int errorPosition)
+void PrintErrorMessage(Error errorCode, int errorPosition)
 {
-	if (errorCode == DEVIDE_BY_ZERO)
+	if (errorCode == DIVIDE_BY_ZERO)
 	{
 		printf("Devide by zero in %d position.", errorPosition);
 	}
@@ -79,6 +86,29 @@ void printErrorMessage(char errorCode, int errorPosition)
 	{
 		printf("Unknown %d parameter. Only +, -, *, / allowed", errorPosition);
 	}
+}
+
+double CalculateExpression(double firstParameter, int argc, char* argv[], Error & error)
+{
+	error = NO_ERROR;
+	double argument = firstParameter;
+	char statement = '\0';
+	for (int i = 2; i < argc && (error == NO_ERROR); ++i)
+	{
+		if ((i % 2) != 0)
+		{
+			argument = StringToDouble(argv[i], error);
+			if (error == NO_ERROR) 
+			{
+				error = ComputeResult(firstParameter, statement, argument);
+			}
+		}
+		else
+		{
+			statement = ReadStatement(argv[i], error);
+		}
+	}
+	return firstParameter;
 }
 
 int main(int argc, char* argv[])
@@ -90,10 +120,7 @@ int main(int argc, char* argv[])
 	}
 
 	int sum = 0;
-
-	char statement;
-	double argument;
-	bool err;
+	Error err;
 
 	double result = StringToDouble(argv[1], err);
 	if (err)
@@ -102,38 +129,17 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	for (int i = 2; i < argc; ++i)
+	result = CalculateExpression(result, argc, argv, err);
+
+	if (err == NO_ERROR)
 	{
-		
-		if ((i % 2) != 0)
-		{
-			argument = StringToDouble(argv[i], err);
-			if (err)
-			{
-				printf("Argument #%d is not a number\n", i);
-				return 1;
-			}
-
-			int computeErrorCode = ComputeResult(result, statement, argument);
-			if (computeErrorCode != OK)
-			{
-				printErrorMessage(computeErrorCode, i);
-				return 1;
-			}
-		}
-		else
-		{
-			statement = ReadStatement(argv[i], err);
-			if (err || statement == INCORRECT_PARAMETER)
-			{
-				printErrorMessage(statement, i);
-				return 1;
-			}
-		}
-		
+		printf("%.3f\n", result);
 	}
-
-	printf("%.3f\n", result);
+	else
+	{
+		PrintErrorMessage(err, 1);
+		return 1;
+	}
 
 	return 0;
 }

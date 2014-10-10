@@ -5,7 +5,6 @@ int SumDigits(int i)
 {
 	int sum = 0;
 
-	// цикл продолжается до тех пор, пока число не станет равным 0
 	while (i != 0)
 	{
 		sum += i % 10;
@@ -21,6 +20,19 @@ int StringToInt(const char * str, bool & err)
 	int param = strtol(str, &pLastChar, 10);
 	err = ((*str == '\0') || (*pLastChar != '\0'));
 	return param;
+}
+
+void PrintNumbers(int lowBound, int upperBound)
+{
+	printf("1");
+	++lowBound;
+	for (int i = lowBound; i <= upperBound; ++i)
+	{
+		if ((i % SumDigits(i)) == 0)
+		{
+			printf(", %d", i);
+		}
+	}
 }
 
 
@@ -42,20 +54,10 @@ int main(int argc, char* argv[])
 		upperBound = inputValue;
 	}
 
-	for (int i = LOWER_BOUND; i <= upperBound; ++i)
-	{
-		if ((i % SumDigits(i)) == 0)
-		{
-			printf("%d", i);
-			if (i != upperBound)
-			{
-				printf(", ");
-			}
-		}
-	}
+	PrintNumbers(LOWER_BOUND, upperBound);
 
 	printf("\n");
-	std::cin.get();
+
 	return 0;
 }
 
