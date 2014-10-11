@@ -1,9 +1,4 @@
 #include <iostream>
-#include "common.h"
-
-// last digit on big nubers(max bound)
-// names of variables prev, next, current
-// print fibonacci in functions
 
 int StringToInt(const char * str, bool & err)
 {

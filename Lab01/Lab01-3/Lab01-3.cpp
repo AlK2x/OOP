@@ -1,6 +1,5 @@
 #include <iostream>
 #include <string.h>
-#include "common.h"
 
 // style
 // devide main
@@ -76,15 +75,15 @@ Error ComputeResult(double & leftArg, char statement, double rightArg)
 	return result;
 }
 
-void PrintErrorMessage(Error errorCode, int errorPosition)
+void PrintErrorMessage(Error errorCode)
 {
 	if (errorCode == DIVIDE_BY_ZERO)
 	{
-		printf("Devide by zero in %d position.", errorPosition);
+		printf("Devide by zero position.");
 	}
 	else if (errorCode == INCORRECT_PARAMETER)
 	{
-		printf("Unknown %d parameter. Only +, -, *, / allowed", errorPosition);
+		printf("Unknown parameter. Only +, -, *, / allowed");
 	}
 }
 
@@ -137,7 +136,7 @@ int main(int argc, char* argv[])
 	}
 	else
 	{
-		PrintErrorMessage(err, 1);
+		PrintErrorMessage(err);
 		return 1;
 	}
 

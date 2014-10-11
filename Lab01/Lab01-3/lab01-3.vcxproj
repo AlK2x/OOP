@@ -83,9 +83,6 @@
     <ClCompile Include="Lab01-3.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="common.h" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="test.bat" />
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <math.h>
+#include <string.h>
 
 const double PI = 3.14159265359;
 const double G = 9.8;
@@ -31,19 +32,48 @@ int main(int argc, char* argv[])
 {
 	printf("Program calculates throwing distance.\n");
 
+	const char exit[] = "exit";
 	double speed, angle, distance, angleInRadian;
 	double isExit = false;
+	char buffer[80];
 
-	while (!exit)
+	while (!isExit)
 	{
-		std::cout << "Enter v0 (or type 'exit') ";
-		std::cin >> speed;
-		std::cout << "Enter a0 (or type 'exit') ";
-		std::cin >> angle;
+		printf("Enter v0 (or type 'exit') ");
+		scanf("%s", buffer);
+		if (strcmp(buffer, exit) != 0)
+		{
+			bool err;
+			speed = StringToDouble(buffer, err);
+			if (err)
+			{
+				printf("Error: %s is not allowed here. Number expected\n", buffer);
+				continue;
+			}
+		}
+		else
+		{
+			break;
+		}
+		printf("Enter a0 (or type 'exit') ");
+		scanf("%s", buffer);
+		if (strcmp(buffer, exit) != 0)
+		{
+			bool err;
+			angle = StringToDouble(buffer, err);
+			if (err)
+			{
+				printf("Error: %s is not allowed here. Number expected\n", buffer);
+				continue;
+			}
+		}
+		else
+		{
+			break;
+		}
 		angleInRadian = DegreeToRadian(angle);
 		distance = CalculateDistance(speed, angleInRadian);
 		std::cout << "Distance is " << distance << "\n";
-		isExit = true;
 	}
 
 	std::cout << "Goodbye\n";
