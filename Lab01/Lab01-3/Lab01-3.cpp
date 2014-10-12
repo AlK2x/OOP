@@ -1,10 +1,6 @@
 #include <iostream>
 #include <string.h>
 
-// style
-// devide main
-// enum for errors double
-
 enum Error
 {
 	NO_ERROR,

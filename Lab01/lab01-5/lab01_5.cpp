@@ -5,6 +5,12 @@
 const double PI = 3.14159265359;
 const double G = 9.8;
 
+enum InputAction
+{
+	CONTINUE,
+	EXIT
+};
+
 double StringToDouble(const char * str, bool & err)
 {
 	char * pLastChar = NULL;
@@ -28,49 +34,53 @@ double CalculateDistance(double speed, double angle)
 	return speed * CalculateFlowTime(speed, angle) * cos(angle);
 }
 
+double ReadUserInput(char * buffer, const char * stringForExit, InputAction & action)
+{
+	double input = 0.0;
+	action = CONTINUE;
+	scanf("%s", buffer);
+	if (strcmp(buffer, stringForExit) != 0)
+	{
+		bool err;
+		input = StringToDouble(buffer, err);
+		if (err)
+		{
+			printf("Error: %s is not allowed here. Positive number expected.\n", buffer);
+		}
+	}
+	else
+	{
+		action = EXIT;
+	}
+
+	return input;
+}
+
 int main(int argc, char* argv[])
 {
 	printf("Program calculates throwing distance.\n");
 
-	const char exit[] = "exit";
+	const char stringForExit[] = "exit";
 	double speed, angle, distance, angleInRadian;
-	double isExit = false;
 	char buffer[80];
+	InputAction userAction;
 
-	while (!isExit)
+	for (;;)
 	{
 		printf("Enter v0 (or type 'exit') ");
-		scanf("%s", buffer);
-		if (strcmp(buffer, exit) != 0)
-		{
-			bool err;
-			speed = StringToDouble(buffer, err);
-			if (err)
-			{
-				printf("Error: %s is not allowed here. Number expected\n", buffer);
-				continue;
-			}
-		}
-		else
+		speed = ReadUserInput(buffer, stringForExit, userAction);
+		if (userAction != CONTINUE)
 		{
 			break;
 		}
+
 		printf("Enter a0 (or type 'exit') ");
-		scanf("%s", buffer);
-		if (strcmp(buffer, exit) != 0)
-		{
-			bool err;
-			angle = StringToDouble(buffer, err);
-			if (err)
-			{
-				printf("Error: %s is not allowed here. Number expected\n", buffer);
-				continue;
-			}
-		}
-		else
+		angle = ReadUserInput(buffer, stringForExit, userAction);
+		if (userAction != CONTINUE)
 		{
 			break;
 		}
+
 		angleInRadian = DegreeToRadian(angle);
 		distance = CalculateDistance(speed, angleInRadian);
 		std::cout << "Distance is " << distance << "\n";
