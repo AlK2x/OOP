@@ -47,7 +47,7 @@ int main(int argc, char* argv[])
 		int inputValue = StringToInt(argv[1], hasError);
 		if (hasError || inputValue <= LOWER_BOUND)
 		{
-			printf("Invalid argument. It must be a digit greather then one.\n");
+			printf("Invalid argument. It must be a digit greather than one.\n");
 			return 1;
 		}
 

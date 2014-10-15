@@ -1,8 +1,11 @@
 #include <iostream>
+#include <stdio.h>
+#define _USE_MATH_DEFINES
 #include <math.h>
 #include <string.h>
+#include <string>
 
-const double PI = 3.14159265359;
+
 const double G = 9.8;
 
 enum InputAction
@@ -21,7 +24,7 @@ double StringToDouble(const char * str, bool & err)
 
 double DegreeToRadian(double degree)
 {
-	return (PI * degree) / 180;
+	return (M_PI * degree) / 180;
 }
 
 double CalculateFlowTime(double speed, double angle)
@@ -56,8 +59,47 @@ double ReadUserInput(char * buffer, const char * stringForExit, InputAction & ac
 	return input;
 }
 
+using namespace std;
+
+bool StringToDouble(string const& str, double & value)
+{
+	try
+	{
+		value = stod(str);
+	}
+	catch (std::exception const& )
+	{
+		return false;
+	}
+	return true;
+}
+
+
 int main(int argc, char* argv[])
 {
+	string inputString;
+	cin >> inputString;
+	
+	if (inputString == "exit")
+	{
+		// exit
+		return 1;
+	}
+	else
+	{
+		double angle;
+		if (StringToDouble(inputString, angle))
+		{
+			// use angle
+			cout << angle << endl;
+		}
+		else
+		{
+			// some error
+			cout << "error" << endl;
+		}
+	}
+
 	printf("Program calculates throwing distance.\n");
 
 	const char stringForExit[] = "exit";
