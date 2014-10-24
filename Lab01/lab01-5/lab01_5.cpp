@@ -5,10 +5,11 @@
 #include <string.h>
 #include <string>
 
+using namespace std;
 
 const double G = 9.8;
 
-enum InputAction
+enum class InputAction
 {
 	CONTINUE,
 	EXIT
@@ -37,29 +38,28 @@ double CalculateDistance(double speed, double angle)
 	return speed * CalculateFlowTime(speed, angle) * cos(angle);
 }
 
-double ReadUserInput(char * buffer, const char * stringForExit, InputAction & action)
+bool ReadUserInput(double & input)
 {
+	string buffer;
+	cin >> buffer;
 	double input = 0.0;
-	action = CONTINUE;
-	scanf("%s", buffer);
-	if (strcmp(buffer, stringForExit) != 0)
+	
+	if (buffer.compare("exit"))
 	{
-		bool err;
-		input = StringToDouble(buffer, err);
-		if (err)
+		if (!StringToDouble(buffer, input))
 		{
 			printf("Error: %s is not allowed here. Positive number expected.\n", buffer);
 		}
 	}
 	else
 	{
-		action = EXIT;
+		action = InputAction::EXIT;
 	}
 
 	return input;
 }
 
-using namespace std;
+
 
 bool StringToDouble(string const& str, double & value)
 {
@@ -102,23 +102,22 @@ int main(int argc, char* argv[])
 
 	printf("Program calculates throwing distance.\n");
 
-	const char stringForExit[] = "exit";
 	double speed, angle, distance, angleInRadian;
-	char buffer[80];
-	InputAction userAction;
+	const string stringForExit = "exit";
+	
 
 	for (;;)
 	{
 		printf("Enter v0 (or type 'exit') ");
-		speed = ReadUserInput(buffer, stringForExit, userAction);
-		if (userAction != CONTINUE)
+		speed = ReadUserInput();
+		if (userAction != InputAction::CONTINUE)
 		{
 			break;
 		}
 
 		printf("Enter a0 (or type 'exit') ");
-		angle = ReadUserInput(buffer, stringForExit, userAction);
-		if (userAction != CONTINUE)
+		angle = ReadUserInput();
+		if (userAction != InputAction::CONTINUE)
 		{
 			break;
 		}
