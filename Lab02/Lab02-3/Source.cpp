@@ -13,19 +13,17 @@ int main(int argc, char * argv[])
 		return 1;
 	}
 
-	string filename1 = argv[1];
-	string filename2 = argv[2];
-	ifstream ifs1(filename1);
-	ifstream ifs2(filename2);
+	ifstream ifs1(argv[1]);
+	ifstream ifs2(argv[2]);
 
 	if (!ifs1.is_open())
 	{
-		cout << "Unable to open file: " << filename1 << "\n";
+		cout << "Unable to open file: " << argv[1] << "\n";
 		return 1;
 	}
 	else if (!ifs2.is_open())
 	{
-		cout << "Unable to open file: " << filename2 << "\n";
+		cout << "Unable to open file: " << argv[2] << "\n";
 		return 1;
 	}
 	else
