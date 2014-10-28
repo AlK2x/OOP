@@ -2,19 +2,24 @@
 
 #include <fstream>
 #include <ostream>
+#include <iomanip>
 
+class ReadMatrix3x3Exception {};
 
 struct Matrix3x3
 {
 	double matrix[3][3];
 
-	bool ReadFromFile(std::ifstream& ifs)
+	void ReadFromFile(std::ifstream& ifs)
 	{
-		ifs >> matrix[0][0] >> matrix[0][1] >> matrix[0][2];
-		ifs >> matrix[1][0] >> matrix[1][1] >> matrix[1][2];
-		ifs >> matrix[2][0] >> matrix[2][1] >> matrix[2][2];
-
-		return true;
+		for (int i = 0; i < 3; ++i)
+		{
+			ifs >> matrix[i][0] >> matrix[i][1] >> matrix[i][2];
+			if (!ifs)
+			{
+				throw ReadMatrix3x3Exception();
+			}
+		}
 	}
 
 	friend Matrix3x3& operator*(Matrix3x3 const& m1, Matrix3x3 const& m2)
@@ -40,7 +45,7 @@ struct Matrix3x3
 		{
 			for (int j = 0; j < 3; ++j)
 			{
-				os << m.matrix[i][j] << " ";
+				os << std::setprecision(3) << m.matrix[i][j] << " ";
 			}
 			os << "\n";
 		}

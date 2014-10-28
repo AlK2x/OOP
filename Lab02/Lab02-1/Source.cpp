@@ -5,7 +5,7 @@
 
 using namespace std;
 
-void FindStringOccurences(ifstream& ifs, string& needle, vector<int>& numLines)
+void FindStringOccurences(ifstream& ifs, string const& needle, vector<int>& numLines)
 {
 	string line;
 	int lineNum = 1;
@@ -13,7 +13,7 @@ void FindStringOccurences(ifstream& ifs, string& needle, vector<int>& numLines)
 	{
 		while (getline(ifs, line))
 		{
-			if (line.compare(needle) == 0)
+			if (line.find(needle) != string::npos)
 			{
 				numLines.push_back(lineNum);
 			}
@@ -27,7 +27,7 @@ void FindStringOccurences(ifstream& ifs, string& needle, vector<int>& numLines)
 	}
 }
 
-int PrintResult(vector<int>& numLines)
+int PrintResult(vector<int> const& numLines)
 {
 	int result = 0;
 	if (numLines.empty())
@@ -63,7 +63,6 @@ int main(int argc, char* argv[])
 		vector<int> numberLinesWithNeedle;
 		FindStringOccurences(ifs, needle, numberLinesWithNeedle);
 		PrintResult(numberLinesWithNeedle);
-		ifs.close();
 	}
 	else
 	{
