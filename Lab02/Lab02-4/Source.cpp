@@ -4,9 +4,45 @@
 
 using namespace std;
 
+void WriteToFile(const char numBytes, const char inputChar, ofstream& ofs)
+{
+	ofs.write(&numBytes, sizeof(char));
+	ofs.write(&inputChar, sizeof(char));
+}
+
 void PackFile(ifstream& ifs, ofstream& ofs)
 {
-	// do some magic here
+	unsigned char numEquivalentBytes = 0;
+	bool writeEndOfFile = false;
+
+	char currentByte, previousByte;
+	if (ifs.read(&previousByte, sizeof(char)))
+	{
+		++numEquivalentBytes;
+		writeEndOfFile = true;
+	}
+
+	
+	while (ifs.read(&currentByte, sizeof(char)))
+	{
+		writeEndOfFile = true;
+		++numEquivalentBytes;
+
+		if (currentByte != previousByte || numEquivalentBytes == 255)
+		{
+			WriteToFile(numEquivalentBytes, previousByte, ofs);
+			writeEndOfFile = false;
+			numEquivalentBytes = 0;
+			previousByte = currentByte;
+		}
+
+		
+	}
+
+	if (writeEndOfFile)
+	{
+		WriteToFile(numEquivalentBytes, previousByte, ofs);
+	}
 }
 
 void UnpackFile(ifstream& ifs, ofstream& ofs)
@@ -60,6 +96,7 @@ int main(int argc, char* argv[])
 		cout << "Unknown command " << command << '\n';
 		return 1;
 	}
+	outputFile.close();
 
 	return 0;
 }
