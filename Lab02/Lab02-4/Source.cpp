@@ -4,6 +4,8 @@
 
 using namespace std;
 
+struct ReadFileException {};
+
 void WriteToFile(const char numBytes, const char inputChar, ofstream& ofs)
 {
 	ofs.write(&numBytes, sizeof(char));
@@ -22,7 +24,6 @@ void PackFile(ifstream& ifs, ofstream& ofs)
 		writeEndOfFile = true;
 	}
 
-	
 	while (ifs.read(&currentByte, sizeof(char)))
 	{
 		writeEndOfFile = true;
@@ -35,8 +36,6 @@ void PackFile(ifstream& ifs, ofstream& ofs)
 			numEquivalentBytes = 0;
 			previousByte = currentByte;
 		}
-
-		
 	}
 
 	if (writeEndOfFile)
@@ -76,12 +75,17 @@ bool ExecuteCommand(string const& command, ifstream& ifs, ofstream& ofs)
 	return true;
 }
 
+void PrintUsage()
+{
+	cout << "Usage: rle.exe :command <input file> <output file>\n";
+	cout << "commands : pack|unpack\n";
+}
+
 int main(int argc, char* argv[])
 {
 	if (argc < 4)
 	{
-		cout << "Usage: rle.exe :command <input file> <output file>\n";
-		cout << "commands : pack|unpack\n";
+		PrintUsage();
 		return 1;
 	}
 
@@ -102,6 +106,7 @@ int main(int argc, char* argv[])
 	if (!ExecuteCommand(command, inputFile, outputFile))
 	{
 		cout << "Unknown command " << command << '\n';
+		PrintUsage();
 		return 1;
 	}
 	outputFile.close();
