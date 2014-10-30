@@ -47,7 +47,15 @@ void PackFile(ifstream& ifs, ofstream& ofs)
 
 void UnpackFile(ifstream& ifs, ofstream& ofs)
 {
-	// do another street magic
+	char numOfSymbols, symbol;
+	while (ifs.read(&numOfSymbols, sizeof(char)))
+	{
+		ifs.read(&symbol, sizeof(char));
+		while (numOfSymbols--)
+		{
+			ofs.write(&symbol, sizeof(char));
+		}
+	}
 }
 
 bool ExecuteCommand(string const& command, ifstream& ifs, ofstream& ofs)
