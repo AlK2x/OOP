@@ -4,7 +4,6 @@
 
 using namespace std;
 
-struct ReadFileException {};
 struct UnpackFileException {};
 struct UnknownCommandException {};
 
@@ -105,12 +104,14 @@ int main(int argc, char* argv[])
 	if (!inputFile)
 	{
 		cout << "Can't open file " << argv[2] << "\n";
+		return 1;
 	}
 
 	ofstream outputFile(argv[3], ios_base::binary);
 	if (!outputFile)
 	{
 		cout << "Can't open file " << argv[3] << "\n";
+		return 1;
 	}
 	
 	try
@@ -121,11 +122,13 @@ int main(int argc, char* argv[])
 	{
 		cout << "Unknown command " << command << '\n';
 		PrintUsage();
+		outputFile.close();
 		return 1;
 	}
 	catch (UnpackFileException e)
 	{
 		cout << "File is corrupted.\n";
+		outputFile.close();
 		return 1;
 	}
 	outputFile.close();
