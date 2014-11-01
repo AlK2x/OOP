@@ -4,17 +4,40 @@
 
 using namespace std;
 
-void CryptFile(ifstream& ifs, ofstream& ofs, char const& key)
+void ShuffleBits(char& i)
 {
-
+	i = (i & 0x80 >> 2) | (i & 0x60 >> 5) | (i & 0x07 << 2) | (i & 0x18 << 3);
 }
 
-void DecryptFile(ifstream& ifs, ofstream& ofs, char const& key)
+void UnshuffleBits(char& i)
 {
-
+	i = (i & 0x20 << 2) | (i & 0x03 << 5) | (i & 0x1C >> 2) | (i & 0xC0 >> 3);
 }
 
-bool ExecuteCommand(string const& command, ifstream& ifs, ofstream& ofs, char const& key)
+
+void CryptFile(ifstream& ifs, ofstream& ofs, const unsigned char key)
+{
+	char word;
+	while (ifs.read(&word, sizeof(char)))
+	{
+		word ^= key;
+		ShuffleBits(word);
+		ofs.write(&word, sizeof(char));
+	}
+}
+
+void DecryptFile(ifstream& ifs, ofstream& ofs, const unsigned char key)
+{
+	char word;
+	while (ifs.read(&word, sizeof(char)))
+	{
+		UnshuffleBits(word);
+		word ^= key;
+		ofs.write(&word, sizeof(char));
+	}
+}
+
+void ExecuteCommand(string const& command, ifstream& ifs, ofstream& ofs, const unsigned char key)
 {
 	if (command == "crypt")
 	{
@@ -26,17 +49,40 @@ bool ExecuteCommand(string const& command, ifstream& ifs, ofstream& ofs, char co
 	}
 	else
 	{
+		throw invalid_argument("Unknown command: " + command);
+	}
+}
+
+void PrintUsage()
+{
+	cout << "Usage:     crypt.exe <command> <input file> <output file> <key>\n";
+	cout << "Commands:  crypt | decrypt\n";
+	cout << "Key:       [0; 255]\n";
+}
+
+bool StringToInt(string str, int & value)
+{
+	try
+	{
+		value = stoi(str);
+	}
+	catch (exception const&)
+	{
 		return false;
 	}
 
 	return true;
 }
 
-void PrintUsage()
+unsigned char ReadKey(string input)
 {
-	cout << "Usage: crypt.exe :command <input file> <output file> <key>\n";
-	cout << "commands : crypt|decrypt\n";
-	cout << "key: [0; 255]\n";
+	int val;
+	if (!StringToInt(input, val) || val < 0 || val > 255)
+	{
+		throw invalid_argument("Invalid key: " + input);
+	}
+
+	return static_cast<unsigned char>(val);
 }
 
 int main(int argc, char* argv[])
@@ -61,12 +107,20 @@ int main(int argc, char* argv[])
 		cout << "Can't open file " << argv[3] << "\n";
 	}
 
-	if (!ExecuteCommand(command, inputFile, outputFile))
+	string keyString(argv[4]);
+
+	try
 	{
-		cout << "Unknown command " << command << '\n';
+		unsigned char key = ReadKey(keyString);
+		ExecuteCommand(command, inputFile, outputFile, key);
+	}
+	catch (invalid_argument& e)
+	{
+		cout << e.what() << '\n';
 		PrintUsage();
 		return 1;
 	}
+
 	outputFile.close();
 
 	return 0;
