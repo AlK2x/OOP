@@ -99,9 +99,9 @@ int main(int argc, char* argv[])
 		cout << "Can't open file " << argv[3] << "\n";
 	}
 
-	string keyString(argv[4]);
+	char key = argv[4][0];
 
-	try
+	if (!ExecuteCommand(command, inputFile, outputFile, key))
 	{
 		unsigned char key = ReadKey(keyString);
 		ExecuteCommand(command, inputFile, outputFile, key);
