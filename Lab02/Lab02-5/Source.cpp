@@ -2,37 +2,29 @@
 #include <fstream>
 #include <string>
 
+typedef void(*CipherFunction)(char& i, const unsigned char key);
+
 using namespace std;
 
-void ShuffleBits(char& i)
+void CryptByte(char& i, const unsigned char key)
 {
+	i ^= key;
 	i = (i & 0x80 >> 2) | (i & 0x60 >> 5) | (i & 0x07 << 2) | (i & 0x18 << 3);
 }
 
-void UnshuffleBits(char& i)
+void DecodeByte(char& i, const unsigned char key)
 {
 	i = (i & 0x20 << 2) | (i & 0x03 << 5) | (i & 0x1C >> 2) | (i & 0xC0 >> 3);
+	i ^= key;
 }
 
 
-void CryptFile(ifstream& ifs, ofstream& ofs, const unsigned char key)
+void ProcessFile(ifstream& ifs, ofstream& ofs, const unsigned char key, CipherFunction fn)
 {
 	char word;
 	while (ifs.read(&word, sizeof(char)))
 	{
-		word ^= key;
-		ShuffleBits(word);
-		ofs.write(&word, sizeof(char));
-	}
-}
-
-void DecryptFile(ifstream& ifs, ofstream& ofs, const unsigned char key)
-{
-	char word;
-	while (ifs.read(&word, sizeof(char)))
-	{
-		UnshuffleBits(word);
-		word ^= key;
+		fn(word, key);
 		ofs.write(&word, sizeof(char));
 	}
 }
@@ -41,11 +33,11 @@ void ExecuteCommand(string const& command, ifstream& ifs, ofstream& ofs, const u
 {
 	if (command == "crypt")
 	{
-		CryptFile(ifs, ofs, key);
+		ProcessFile(ifs, ofs, key, CryptByte);
 	}
 	else if (command == "decrypt")
 	{
-		DecryptFile(ifs, ofs, key);
+		ProcessFile(ifs, ofs, key, DecodeByte);
 	}
 	else
 	{
