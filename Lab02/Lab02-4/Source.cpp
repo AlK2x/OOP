@@ -4,9 +4,6 @@
 
 using namespace std;
 
-struct UnpackFileException {};
-struct UnknownCommandException {};
-
 void WriteToFile(const char numBytes, const char inputChar, ofstream& ofs)
 {
 	ofs.write(&numBytes, sizeof(char));
@@ -50,7 +47,7 @@ void UnpackFile(ifstream& ifs, ofstream& ofs)
 	{
 		if (numOfSymbols == 0)
 		{
-			throw UnpackFileException();
+			throw runtime_error("Corrypted file. Try to print zero number chars");
 		}
 
 		if (ifs.read(&symbol, sizeof(char)))
@@ -62,7 +59,7 @@ void UnpackFile(ifstream& ifs, ofstream& ofs)
 		}
 		else
 		{
-			throw UnpackFileException();
+			throw runtime_error("Corrypted file. Odd file length.");
 		}
 		
 	}
@@ -80,7 +77,7 @@ void ExecuteCommand(string const& command, ifstream& ifs, ofstream& ofs)
 	}
 	else
 	{
-		throw UnknownCommandException();
+		throw invalid_argument("Unknown command: " + command);
 	}
 }
 
@@ -118,19 +115,14 @@ int main(int argc, char* argv[])
 	{
 		ExecuteCommand(command, inputFile, outputFile);
 	}
-	catch (UnknownCommandException e)
+	catch (exception& e)
 	{
-		cout << "Unknown command " << command << '\n';
+		cout << e.what() << '\n';
 		PrintUsage();
 		outputFile.close();
 		return 1;
 	}
-	catch (UnpackFileException e)
-	{
-		cout << "File is corrupted.\n";
-		outputFile.close();
-		return 1;
-	}
+
 	outputFile.close();
 
 	return 0;

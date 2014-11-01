@@ -99,11 +99,11 @@ int main(int argc, char* argv[])
 		cout << "Can't open file " << argv[3] << "\n";
 	}
 
-	char key = argv[4][0];
+	string stringKey(argv[4]);
 
-	if (!ExecuteCommand(command, inputFile, outputFile, key))
+	try
 	{
-		unsigned char key = ReadKey(keyString);
+		unsigned char key = ReadKey(stringKey);
 		ExecuteCommand(command, inputFile, outputFile, key);
 	}
 	catch (invalid_argument& e)
