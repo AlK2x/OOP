@@ -10,6 +10,19 @@ struct Matrix3x3
 {
 	double matrix[3][3];
 
+	Matrix3x3()
+	{
+		for (int i = 0; i < 3; ++i)
+		{
+			for (int j = 0; j < 3; ++j)
+			{
+				matrix[i][j] = 0.0;
+			}
+		}
+	}
+
+	~Matrix3x3() {}
+
 	void ReadFromFile(std::ifstream& ifs)
 	{
 		for (int i = 0; i < 3; ++i)
@@ -22,21 +35,21 @@ struct Matrix3x3
 		}
 	}
 
-	friend Matrix3x3& operator*(Matrix3x3 const& m1, Matrix3x3 const& m2)
+	Matrix3x3 operator*(Matrix3x3 const& m)
 	{
-		Matrix3x3 * result = new Matrix3x3();
+		Matrix3x3 result;
 		for (int i = 0; i < 3; ++i)
 		{
 			for (int j = 0; j < 3; ++j)
 			{
 				for (int k = 0; k < 3; ++k)
 				{
-					result->matrix[i][j] += m1.matrix[i][k] * m2.matrix[k][j];
+					result.matrix[i][j] += matrix[i][k] * m.matrix[k][j];
 				}
 			}
 		}
 
-		return *result;
+		return result;
 	}
 
 	friend std::ostream& operator<< (std::ostream& os, Matrix3x3 const& m)

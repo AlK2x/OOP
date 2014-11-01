@@ -61,7 +61,9 @@ int main(int argc, char* argv[])
 		cout << "Can't open file " << argv[3] << "\n";
 	}
 
-	if (!ExecuteCommand(command, inputFile, outputFile))
+	char key = argv[4][0];
+
+	if (!ExecuteCommand(command, inputFile, outputFile, key))
 	{
 		cout << "Unknown command " << command << '\n';
 		PrintUsage();
