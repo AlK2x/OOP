@@ -1,0 +1,92 @@
+
+D:\InstitutPS\С++\OOP\Lab02\Lab02-4\bin>REM test pack empty file 
+
+D:\InstitutPS\С++\OOP\Lab02\Lab02-4\bin>rle.exe pack "empty.txt" "empty.rle" 
+
+D:\InstitutPS\С++\OOP\Lab02\Lab02-4\bin>IF ERRORLEVEL 1 GOTO err 
+
+D:\InstitutPS\С++\OOP\Lab02\Lab02-4\bin>FC /B "empty.txt" "empty.rle" 
+Сравнение файлов empty.txt и EMPTY.RLE
+FC: различия не найдены
+
+
+D:\InstitutPS\С++\OOP\Lab02\Lab02-4\bin>IF ERRORLEVEL 1 GOTO err 
+
+D:\InstitutPS\С++\OOP\Lab02\Lab02-4\bin>REM test normal pack/unpack cycle 
+
+D:\InstitutPS\С++\OOP\Lab02\Lab02-4\bin>rle.exe pack "test.txt" "test.rle" 
+
+D:\InstitutPS\С++\OOP\Lab02\Lab02-4\bin>IF ERRORLEVEL 1 GOTO err 
+
+D:\InstitutPS\С++\OOP\Lab02\Lab02-4\bin>rle.exe unpack "test.rle" "cycle_test.txt" 
+
+D:\InstitutPS\С++\OOP\Lab02\Lab02-4\bin>FC /B "test.txt" "cycle_test.txt" 
+Сравнение файлов test.txt и CYCLE_TEST.TXT
+FC: различия не найдены
+
+
+D:\InstitutPS\С++\OOP\Lab02\Lab02-4\bin>IF ERRORLEVEL 1 GOTO err 
+
+D:\InstitutPS\С++\OOP\Lab02\Lab02-4\bin>REM test 255 file length 
+
+D:\InstitutPS\С++\OOP\Lab02\Lab02-4\bin>rle.exe pack "255.txt" "255.rle" 
+
+D:\InstitutPS\С++\OOP\Lab02\Lab02-4\bin>IF ERRORLEVEL 1 GOTO err 
+
+D:\InstitutPS\С++\OOP\Lab02\Lab02-4\bin>FC /B "255.rle" "reference_255.txt" 
+Сравнение файлов 255.rle и REFERENCE_255.TXT
+FC: различия не найдены
+
+
+D:\InstitutPS\С++\OOP\Lab02\Lab02-4\bin>IF ERRORLEVEL 1 GOTO err 
+
+D:\InstitutPS\С++\OOP\Lab02\Lab02-4\bin>REM test 256 file length 
+
+D:\InstitutPS\С++\OOP\Lab02\Lab02-4\bin>rle.exe pack "256.txt" "256.rle" 
+
+D:\InstitutPS\С++\OOP\Lab02\Lab02-4\bin>IF ERRORLEVEL 1 GOTO err 
+
+D:\InstitutPS\С++\OOP\Lab02\Lab02-4\bin>FC /B "256.rle" "reference_256.txt" 
+Сравнение файлов 256.rle и REFERENCE_256.TXT
+FC: различия не найдены
+
+
+D:\InstitutPS\С++\OOP\Lab02\Lab02-4\bin>IF ERRORLEVEL 1 GOTO err 
+
+D:\InstitutPS\С++\OOP\Lab02\Lab02-4\bin>REM test 257 file length 
+
+D:\InstitutPS\С++\OOP\Lab02\Lab02-4\bin>rle.exe pack "257.txt" "257.rle" 
+
+D:\InstitutPS\С++\OOP\Lab02\Lab02-4\bin>IF ERRORLEVEL 1 GOTO err 
+
+D:\InstitutPS\С++\OOP\Lab02\Lab02-4\bin>FC /B "257.rle" "reference_257.txt" 
+Сравнение файлов 257.rle и REFERENCE_257.TXT
+FC: различия не найдены
+
+
+D:\InstitutPS\С++\OOP\Lab02\Lab02-4\bin>IF ERRORLEVEL 1 GOTO err 
+
+D:\InstitutPS\С++\OOP\Lab02\Lab02-4\bin>REM test file with 16 ff symbols 
+
+D:\InstitutPS\С++\OOP\Lab02\Lab02-4\bin>rle.exe pack "ff.txt" "ff.rle" 
+
+D:\InstitutPS\С++\OOP\Lab02\Lab02-4\bin>IF ERRORLEVEL 1 GOTO err 
+
+D:\InstitutPS\С++\OOP\Lab02\Lab02-4\bin>FC /B "ff.rle" "reference_ff.txt" 
+Сравнение файлов ff.rle и REFERENCE_FF.TXT
+FC: различия не найдены
+
+
+D:\InstitutPS\С++\OOP\Lab02\Lab02-4\bin>IF ERRORLEVEL 1 GOTO err 
+
+D:\InstitutPS\С++\OOP\Lab02\Lab02-4\bin>REM test unpack corrupted file 
+
+D:\InstitutPS\С++\OOP\Lab02\Lab02-4\bin>rle.exe unpack "corrupted.rle" "corrupted.txt" 
+File is corrupted.
+
+D:\InstitutPS\С++\OOP\Lab02\Lab02-4\bin>IF NOT ERRORLEVEL 1 GOTO err 
+
+D:\InstitutPS\С++\OOP\Lab02\Lab02-4\bin>ECHO Program testing succeeded :-) 
+Program testing succeeded :-)
+
+D:\InstitutPS\С++\OOP\Lab02\Lab02-4\bin>EXIT

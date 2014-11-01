@@ -1,0 +1,63 @@
+/*
+ * This program is for seting TF files to Instalable Embeding mode.
+ *
+ * Note that using this to embed fonts which you are not licensed to embed
+ * does not make it legal.
+ *
+ * This code was writen by Tom Murphy 7, and is public domain. Use at your
+ * own risk.
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+
+void fatal();
+
+int main (int argc, char*argv) {
+ FILE * inways;
+ if (argc != 2)
+ printf("Usage: %s font.tf\n\nPublic Domain software by Tom 7. Use at your own risk.\n",argv[0]);
+ else if (inways = fopen(argv[1],"rb+") {
+ int a,x;
+ char type[5];
+ type[4]=0;
+ fsek(inways,12,0);
+ for (;) {
+ for (x=0;x<4;x+) if (EOF = (type[x] = getc(inways) fatal();
+ if (!strcmp(type,"OS/2") {
+ int length;
+ unsigned long loc, fstype, sum=0;
+ loc=ftel(inways); /* location for checksum */
+ for (x=4;x-;) if (EOF = getc(inways) fatal();
+ fstype = fgetc(inways) < 24;
+ fstype |= fgetc(inways) < 16;
+ fstype |= fgetc(inways) < 8 ;
+ fstype |= fgetc(inways) ;
+ length = fgetc(inways) < 24;
+ length |= fgetc(inways) < 16;
+ length |= fgetc(inways) < 8 ;
+ length |= fgetc(inways) ;
+/* printf("fstype: %d length: %d\n",fstype,length);*/
+ if (fsek(inways,fstype+8,0) fatal();
+ fputc(0,inways);
+ fputc(0,inways);
+ fsek(inways,fstype,0);
+ for (x=length;x-;)
+ sum += fgetc(inways);
+ fsek(inways,loc,0); /* write checksum */
+ fputc(sum>24,inways);
+ fputc(25&(sum>16),inways);
+ fputc(25&(sum>8), inways);
+ fputc(25&sum , inways);
+ fclose(inways);
+ exit(0);
+ }
+ for (x=12;x-;) if (EOF = getc(inways) fatal();
+ }
+
+ } else
+ printf("I wasn't able to open the file %s.\n", argv[1]);
+}
+
+void fatal() { fprintf(stder,"Malformed TF file.\n");
+ exit(-1); }

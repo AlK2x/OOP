@@ -5,6 +5,8 @@
 using namespace std;
 
 struct ReadFileException {};
+struct UnpackFileException {};
+struct UnknownCommandException {};
 
 void WriteToFile(const char numBytes, const char inputChar, ofstream& ofs)
 {
@@ -15,30 +17,27 @@ void WriteToFile(const char numBytes, const char inputChar, ofstream& ofs)
 void PackFile(ifstream& ifs, ofstream& ofs)
 {
 	unsigned char numEquivalentBytes = 0;
-	bool writeEndOfFile = false;
 
 	char currentByte, previousByte;
 	if (ifs.read(&previousByte, sizeof(char)))
 	{
 		++numEquivalentBytes;
-		writeEndOfFile = true;
 	}
 
 	while (ifs.read(&currentByte, sizeof(char)))
 	{
-		writeEndOfFile = true;
-		++numEquivalentBytes;
-
+		
 		if (currentByte != previousByte || numEquivalentBytes == 255)
 		{
 			WriteToFile(numEquivalentBytes, previousByte, ofs);
-			writeEndOfFile = false;
 			numEquivalentBytes = 0;
 			previousByte = currentByte;
 		}
+
+		++numEquivalentBytes;
 	}
 
-	if (writeEndOfFile)
+	if (numEquivalentBytes != 0 && previousByte == currentByte)
 	{
 		WriteToFile(numEquivalentBytes, previousByte, ofs);
 	}
@@ -47,17 +46,30 @@ void PackFile(ifstream& ifs, ofstream& ofs)
 void UnpackFile(ifstream& ifs, ofstream& ofs)
 {
 	char numOfSymbols, symbol;
+
 	while (ifs.read(&numOfSymbols, sizeof(char)))
 	{
-		ifs.read(&symbol, sizeof(char));
-		while (numOfSymbols--)
+		if (numOfSymbols == 0)
 		{
-			ofs.write(&symbol, sizeof(char));
+			throw UnpackFileException();
 		}
+
+		if (ifs.read(&symbol, sizeof(char)))
+		{
+			while (numOfSymbols--)
+			{
+				ofs.write(&symbol, sizeof(char));
+			}
+		}
+		else
+		{
+			throw UnpackFileException();
+		}
+		
 	}
 }
 
-bool ExecuteCommand(string const& command, ifstream& ifs, ofstream& ofs)
+void ExecuteCommand(string const& command, ifstream& ifs, ofstream& ofs)
 {
 	if (command == "pack")
 	{
@@ -69,10 +81,8 @@ bool ExecuteCommand(string const& command, ifstream& ifs, ofstream& ofs)
 	}
 	else
 	{
-		return false;
+		throw UnknownCommandException();
 	}
-
-	return true;
 }
 
 void PrintUsage()
@@ -103,10 +113,19 @@ int main(int argc, char* argv[])
 		cout << "Can't open file " << argv[3] << "\n";
 	}
 	
-	if (!ExecuteCommand(command, inputFile, outputFile))
+	try
+	{
+		ExecuteCommand(command, inputFile, outputFile);
+	}
+	catch (UnknownCommandException e)
 	{
 		cout << "Unknown command " << command << '\n';
 		PrintUsage();
+		return 1;
+	}
+	catch (UnpackFileException e)
+	{
+		cout << "File is corrupted.\n";
 		return 1;
 	}
 	outputFile.close();
