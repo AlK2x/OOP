@@ -10,17 +10,25 @@ vector<int> FindStringOccurences(ifstream& ifs, string const& needle)
 	vector<int> numLines;
 	string line;
 	int lineNum = 1;
-
-	while (getline(ifs, line))
+	try
 	{
-		if (line.find(needle) != string::npos)
+		while (getline(ifs, line))
 		{
-			numLines.push_back(lineNum);
+			if (line.find(needle) != string::npos)
+			{
+				numLines.push_back(lineNum);
+			}
+			++lineNum;
 		}
-		++lineNum;
-	}
 
-	return numLines;
+		return numLines;
+	}
+	catch (ios_base::failure& e)
+	{
+		cout << "Read file exception. Error: " << e.what() << "\n"
+			<< "Code :" << e.code() << "\n";
+		return numLines;
+	}
 }
 
 int PrintResult(vector<int> const& numLines)
@@ -54,6 +62,7 @@ int main(int argc, char* argv[])
 	string needle = argv[2];
 
 	ifstream ifs(filename);
+	ifs.exceptions(ifstream::failbit | ifstream::badbit);
 	if (ifs.is_open())
 	{
 		vector<int> numberLinesWithNeedle = FindStringOccurences(ifs, needle);
