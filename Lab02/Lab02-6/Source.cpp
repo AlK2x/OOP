@@ -5,18 +5,51 @@
 
 using namespace std;
 
-enum class SquareState
+struct Point
 {
-	EMPTY = ' ',
-	FULL = '.',
-	WALL = '#',
-	START = 'O'
+	int x, y;
+	Point(int x, int y) : x(x), y(y) {}
 };
 
 struct Maze
 {
 	vector<vector<char>> field;
+	vector<Point> startPoints;
 };
+
+void FillCellsAroundPoint(Maze& maze, Point const& point)
+{
+	int x = point.x;
+	int y = point.y;
+	if (maze.field[x + 1][y] == ' ')
+	{
+		maze.field[x + 1][y] = '.';
+		FillCellsAroundPoint(maze, Point(x + 1, y));
+	}
+	if (maze.field[x - 1][y] == ' ')
+	{
+		maze.field[x - 1][y] = '.';
+		FillCellsAroundPoint(maze, Point(x - 1, y));
+	}
+	if (maze.field[x][y + 1] == ' ')
+	{
+		maze.field[x][y + 1] = '.';
+		FillCellsAroundPoint(maze, Point(x, y + 1));
+	}
+	if (maze.field[x][y - 1] == ' ')
+	{
+		maze.field[x][y - 1] = '.';
+		FillCellsAroundPoint(maze, Point(x, y - 1));
+	}
+}
+
+void FillMaze(Maze& maze)
+{
+	for (Point startPoint : maze.startPoints)
+	{
+		FillCellsAroundPoint(maze, startPoint);
+	}
+}
 
 ostream& operator<< (ostream& os, Maze const& maze)
 {
@@ -34,6 +67,7 @@ ostream& operator<< (ostream& os, Maze const& maze)
 istream& operator>> (istream& is, Maze& m)
 {
 	string line;
+	int row = 0;
 	while (getline(is, line))
 	{
 		vector<char> mazeLine;
@@ -52,6 +86,7 @@ istream& operator>> (istream& is, Maze& m)
 					break;
 				case 'O':
 					mazeLine.push_back(squareState);
+					m.startPoints.push_back(Point(row, col));
 					break;
 				default:
 					break;
@@ -59,6 +94,7 @@ istream& operator>> (istream& is, Maze& m)
 			}
 		}
 		m.field.push_back(mazeLine);
+		++row;
 	}
 
 	return is;
@@ -93,6 +129,7 @@ int main(int argc, char * argv[])
 
 	Maze maze;
 	emptyMazeFile >> maze;
+	FillMaze(maze);
 	filledMazeFile << maze;
 
 	return 0;
