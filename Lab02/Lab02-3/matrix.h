@@ -24,3 +24,6 @@ struct Matrix3x3
 
 	const Matrix3x3 operator*(Matrix3x3 const& m) const;
 };
+
+std::ostream& operator<< (std::ostream& os, Matrix3x3 const& m);
+std::istream& operator>> (std::istream& is, Matrix3x3& m);
