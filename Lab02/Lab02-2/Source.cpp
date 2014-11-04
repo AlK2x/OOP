@@ -3,22 +3,13 @@
 
 using namespace std;
 
-bool StringToInt(string str, int & value)
-{
-	try
-	{
-		value = stoi(str);
-	}
-	catch (exception const&)
-	{
-		return false;
-	}
-
-	return true;
-}
-
 unsigned FlipBits(unsigned  input)
 {
+	if (input < 0 || input > 255)
+	{
+		throw invalid_argument("Digit out of range: [0;255].\n");
+	}
+
 	input = ((input >> 1) & 0x55) | ((input & 0x55) << 1);
 	input = ((input >> 2) & 0x33) | ((input & 0x33) << 2);
 	input = ((input >> 4) & 0x0f) | ((input & 0x0f) << 4);
@@ -34,21 +25,19 @@ int main(int argc, char * argv[])
 		return 1;
 	}
 
-	string input = argv[1];
-	int val;
-	if (StringToInt(input, val))
+	string input(argv[1]);
+	
+	try
 	{
-		if (val >= 0 && val <= 255)
-		{
-			cout << FlipBits(val) << "\n";
-		}
-		else
-		{
-			cout << "Digit " << val << " out of range [0;255].\n";
-			return 1;
-		}
+		int val = stoi(input);
+		cout << FlipBits(val) << '\n';
 	}
-	else
+	catch (invalid_argument const& e)
+	{
+		cout << e.what();
+		return 1;
+	}
+	catch (exception const& e)
 	{
 		cout << "Value '" << argv[1] << "' not a digit from 0 to 255.\n";
 		return 1;
