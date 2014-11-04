@@ -37,11 +37,6 @@ int main(int argc, char * argv[])
 		cout << e.what();
 		return 1;
 	}
-	catch (exception const& e)
-	{
-		cout << "Value '" << argv[1] << "' not a digit from 0 to 255.\n";
-		return 1;
-	}
 
 	return 0;
 }
