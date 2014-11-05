@@ -21,25 +21,33 @@ void FillCellsAroundPoint(Maze& maze, Point const& point)
 {
 	int x = point.x;
 	int y = point.y;
-	if (maze.field[x + 1][y] == ' ')
+	size_t yMax = maze.field.size() - 1;
+	try
 	{
-		maze.field[x + 1][y] = '.';
-		FillCellsAroundPoint(maze, Point(x + 1, y));
+		if ((x < maze.field.at(x).size() - 1) && maze.field.at(x + 1).at(y) == ' ')
+		{
+			maze.field.at(x + 1).at(y) = '.';
+			FillCellsAroundPoint(maze, Point(x + 1, y));
+		}
+		if (x > 0 && maze.field.at(x - 1).at(y) == ' ')
+		{
+			maze.field.at(x - 1).at(y) = '.';
+			FillCellsAroundPoint(maze, Point(x - 1, y));
+		}
+		if ((y < yMax) && maze.field.at(x).at(y + 1) == ' ')
+		{
+			maze.field.at(x).at(y + 1) = '.';
+			FillCellsAroundPoint(maze, Point(x, y + 1));
+		}
+		if (y > 0 && maze.field.at(x).at(y - 1) == ' ')
+		{
+			maze.field.at(x).at(y - 1) = '.';
+			FillCellsAroundPoint(maze, Point(x, y - 1));
+		}
 	}
-	if (maze.field[x - 1][y] == ' ')
+	catch (...)
 	{
-		maze.field[x - 1][y] = '.';
-		FillCellsAroundPoint(maze, Point(x - 1, y));
-	}
-	if (maze.field[x][y + 1] == ' ')
-	{
-		maze.field[x][y + 1] = '.';
-		FillCellsAroundPoint(maze, Point(x, y + 1));
-	}
-	if (maze.field[x][y - 1] == ' ')
-	{
-		maze.field[x][y - 1] = '.';
-		FillCellsAroundPoint(maze, Point(x, y - 1));
+		throw runtime_error("invalid maze");
 	}
 }
 
@@ -127,10 +135,17 @@ int main(int argc, char * argv[])
 		return 1;
 	}
 
-	Maze maze;
-	emptyMazeFile >> maze;
-	FillMaze(maze);
-	filledMazeFile << maze;
+	try
+	{
+		Maze maze;
+		emptyMazeFile >> maze;
+		FillMaze(maze);
+		filledMazeFile << maze;
+	}
+	catch (exception const& e)
+	{
+		cout << e.what() << endl;
+	}
 
 	return 0;
 }
