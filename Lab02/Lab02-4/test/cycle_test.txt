@@ -61,4 +61,3 @@ int main (int argc, char**argv) {
 
 void fatal() { fprintf(stderr,"Malformed TTF file.\n");
                exit(-1); }
-

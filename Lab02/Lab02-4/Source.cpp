@@ -14,28 +14,37 @@ void PackFile(ifstream& ifs, ofstream& ofs)
 {
 	unsigned char numEquivalentBytes = 0;
 	char currentByte, previousByte;
+	bool writeLastSymbol = false;
 
-	if (!ifs.eof() && ifs.read(&previousByte, sizeof(char)))
+	ifs.read(&previousByte, sizeof(char));
+	if (ifs.good())
 	{
 		++numEquivalentBytes;
-	}
+		writeLastSymbol = true;
 
-	
-	while (!ifs.eof())
-	{
-		ifs.read(&currentByte, sizeof(char));
-
-		if (currentByte != previousByte || numEquivalentBytes == 255)
+		while (ifs.good())
 		{
-			WriteToFile(numEquivalentBytes, previousByte, ofs);
-			numEquivalentBytes = 0;
-			previousByte = currentByte;
+			ifs.read(&currentByte, sizeof(char));
+			writeLastSymbol = true;
+
+			if (ifs.good())
+			{
+				if (currentByte != previousByte || numEquivalentBytes == 255)
+				{
+					WriteToFile(numEquivalentBytes, previousByte, ofs);
+					numEquivalentBytes = 1;
+					previousByte = currentByte;
+					writeLastSymbol = false;
+				}
+				else if (currentByte == previousByte)
+				{
+					++numEquivalentBytes;
+				}
+			}
 		}
-
-		++numEquivalentBytes;
 	}
-
-	if (numEquivalentBytes != 0 && previousByte == currentByte)
+		
+	if (writeLastSymbol)
 	{
 		WriteToFile(numEquivalentBytes, previousByte, ofs);
 	}
@@ -45,26 +54,28 @@ void UnpackFile(ifstream& ifs, ofstream& ofs)
 {
 	char numOfSymbols, symbol;
 
-	while (!ifs.eof())
+	ifs.read(&numOfSymbols, sizeof(char));
+	while (ifs.good())
 	{
-		ifs.read(&numOfSymbols, sizeof(char));
 		if (numOfSymbols == 0)
 		{
 			throw runtime_error("Corrypted file. Try to print zero number chars");
 		}
 
-		if (ifs.read(&symbol, sizeof(char)))
+		ifs.read(&symbol, sizeof(char));
+		while (numOfSymbols--)
 		{
-			while (numOfSymbols--)
-			{
-				ofs.write(&symbol, sizeof(char));
-			}
+			ofs.write(&symbol, sizeof(char));
+		}
+		
+		if (ifs.good())
+		{
+			ifs.read(&numOfSymbols, sizeof(char));
 		}
 		else
 		{
 			throw runtime_error("Corrypted file. Odd file length.");
 		}
-		
 	}
 }
 
