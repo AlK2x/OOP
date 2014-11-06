@@ -24,22 +24,25 @@ void FillCellsAroundPoint(Maze& maze, Point const& point)
 	size_t yMax = maze.field.size() - 1;
 	try
 	{
-		if ((x < maze.field.at(x).size() - 1) && maze.field.at(x + 1).at(y) == ' ')
+		if (maze.field.at(x + 1).at(y) == ' ')
 		{
 			maze.field.at(x + 1).at(y) = '.';
 			FillCellsAroundPoint(maze, Point(x + 1, y));
 		}
-		if (x > 0 && maze.field.at(x - 1).at(y) == ' ')
+
+		if (maze.field.at(x - 1).at(y) == ' ')
 		{
 			maze.field.at(x - 1).at(y) = '.';
 			FillCellsAroundPoint(maze, Point(x - 1, y));
 		}
-		if ((y < yMax) && maze.field.at(x).at(y + 1) == ' ')
+
+		if (maze.field.at(x).at(y + 1) == ' ')
 		{
 			maze.field.at(x).at(y + 1) = '.';
 			FillCellsAroundPoint(maze, Point(x, y + 1));
 		}
-		if (y > 0 && maze.field.at(x).at(y - 1) == ' ')
+
+		if (maze.field.at(x).at(y - 1) == ' ')
 		{
 			maze.field.at(x).at(y - 1) = '.';
 			FillCellsAroundPoint(maze, Point(x, y - 1));

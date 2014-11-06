@@ -13,16 +13,18 @@ void WriteToFile(const char numBytes, const char inputChar, ofstream& ofs)
 void PackFile(ifstream& ifs, ofstream& ofs)
 {
 	unsigned char numEquivalentBytes = 0;
-
 	char currentByte, previousByte;
-	if (ifs.read(&previousByte, sizeof(char)))
+
+	if (!ifs.eof() && ifs.read(&previousByte, sizeof(char)))
 	{
 		++numEquivalentBytes;
 	}
 
-	while (ifs.read(&currentByte, sizeof(char)))
+	
+	while (!ifs.eof())
 	{
-		
+		ifs.read(&currentByte, sizeof(char));
+
 		if (currentByte != previousByte || numEquivalentBytes == 255)
 		{
 			WriteToFile(numEquivalentBytes, previousByte, ofs);
@@ -43,8 +45,9 @@ void UnpackFile(ifstream& ifs, ofstream& ofs)
 {
 	char numOfSymbols, symbol;
 
-	while (ifs.read(&numOfSymbols, sizeof(char)))
+	while (!ifs.eof())
 	{
+		ifs.read(&numOfSymbols, sizeof(char));
 		if (numOfSymbols == 0)
 		{
 			throw runtime_error("Corrypted file. Try to print zero number chars");
