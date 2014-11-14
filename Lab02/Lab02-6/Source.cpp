@@ -5,6 +5,11 @@
 
 using namespace std;
 
+const char FILLED = '.';
+const char EMPTY = ' ';
+const char WALL = '#';
+const char START_POINT = 'O';
+
 struct Point
 {
 	int x, y;
@@ -24,27 +29,27 @@ void FillCellsAroundPoint(Maze& maze, Point const& point)
 	size_t yMax = maze.field.size() - 1;
 	try
 	{
-		if (maze.field.at(x + 1).at(y) == ' ')
+		if (maze.field.at(x + 1).at(y) == EMPTY)
 		{
-			maze.field.at(x + 1).at(y) = '.';
+			maze.field.at(x + 1).at(y) = FILLED;
 			FillCellsAroundPoint(maze, Point(x + 1, y));
 		}
 
-		if (maze.field.at(x - 1).at(y) == ' ')
+		if (maze.field.at(x - 1).at(y) == EMPTY)
 		{
-			maze.field.at(x - 1).at(y) = '.';
+			maze.field.at(x - 1).at(y) = FILLED;
 			FillCellsAroundPoint(maze, Point(x - 1, y));
 		}
 
-		if (maze.field.at(x).at(y + 1) == ' ')
+		if (maze.field.at(x).at(y + 1) == EMPTY)
 		{
-			maze.field.at(x).at(y + 1) = '.';
+			maze.field.at(x).at(y + 1) = FILLED;
 			FillCellsAroundPoint(maze, Point(x, y + 1));
 		}
 
-		if (maze.field.at(x).at(y - 1) == ' ')
+		if (maze.field.at(x).at(y - 1) == EMPTY)
 		{
-			maze.field.at(x).at(y - 1) = '.';
+			maze.field.at(x).at(y - 1) = FILLED;
 			FillCellsAroundPoint(maze, Point(x, y - 1));
 		}
 	}
@@ -89,13 +94,13 @@ istream& operator>> (istream& is, Maze& m)
 				char squareState = line[col];
 				switch (squareState)
 				{
-				case ' ':
+				case EMPTY:
 					mazeLine.push_back(squareState);
 					break;
-				case '#':
+				case WALL:
 					mazeLine.push_back(squareState);
 					break;
-				case 'O':
+				case START_POINT:
 					mazeLine.push_back(squareState);
 					m.startPoints.push_back(Point(row, col));
 					break;
