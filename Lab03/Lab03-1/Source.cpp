@@ -62,7 +62,6 @@ int main(int argc, char * argv)
 {
 	TestProcessVector();
 
-
 	vector<double> inputVector = ReadVectorFromStream();
 	ProcessVector(inputVector);
 	PrintVector(inputVector);

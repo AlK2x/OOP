@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+# Visual Studio Express 2013 for Windows Desktop
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lab03-1", "Lab03-1\Lab03-1.vcxproj", "{95064DB3-E6E6-4804-9945-8DC0D4FC622A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lab03-2", "Lab03-2\Lab03-2.vcxproj", "{3D76ABAB-7FF7-4553-9A59-F76B8D163F90}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{95064DB3-E6E6-4804-9945-8DC0D4FC622A}.Debug|Win32.Build.0 = Debug|Win32
 		{95064DB3-E6E6-4804-9945-8DC0D4FC622A}.Release|Win32.ActiveCfg = Release|Win32
 		{95064DB3-E6E6-4804-9945-8DC0D4FC622A}.Release|Win32.Build.0 = Release|Win32
+		{3D76ABAB-7FF7-4553-9A59-F76B8D163F90}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3D76ABAB-7FF7-4553-9A59-F76B8D163F90}.Debug|Win32.Build.0 = Debug|Win32
+		{3D76ABAB-7FF7-4553-9A59-F76B8D163F90}.Release|Win32.ActiveCfg = Release|Win32
+		{3D76ABAB-7FF7-4553-9A59-F76B8D163F90}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
