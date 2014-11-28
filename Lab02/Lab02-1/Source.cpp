@@ -11,8 +11,9 @@ vector<int> FindStringOccurences(ifstream& ifs, string const& needle)
 	string line;
 	int lineNum = 1;
 
-	while (getline(ifs, line))
+	while (ifs.good())
 	{
+		getline(ifs, line);
 		if (line.find(needle) != string::npos)
 		{
 			numLines.push_back(lineNum);

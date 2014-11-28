@@ -52,24 +52,10 @@ void PrintUsage()
 	cout << "Key:       [0; 255]\n";
 }
 
-bool StringToInt(string str, int & value)
-{
-	try
-	{
-		value = stoi(str);
-	}
-	catch (exception const&)
-	{
-		return false;
-	}
-
-	return true;
-}
-
 unsigned char ReadKey(string input)
 {
-	int val;
-	if (!StringToInt(input, val) || val < 0 || val > 255)
+	int val = stoi(input);
+	if (val < 0 || val > 255)
 	{
 		throw invalid_argument("Invalid key: " + input);
 	}
@@ -106,7 +92,7 @@ int main(int argc, char* argv[])
 		unsigned char key = ReadKey(stringKey);
 		ExecuteCommand(command, inputFile, outputFile, key);
 	}
-	catch (invalid_argument& e)
+	catch (exception const& e)
 	{
 		cout << e.what() << '\n';
 		PrintUsage();
