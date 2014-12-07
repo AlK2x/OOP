@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "PrimeGenerator.h"
 
 using namespace std;
@@ -34,7 +35,7 @@ set<int> GeneratePrimeNumersSet(int upperBound)
 	{
 		if (primeVector[n])
 		{
-			for (unsigned k = n * n, ulim = static_cast<unsigned>(upperBound); k < ulim; k += n)
+			for (unsigned k = n * n, ulim = static_cast<unsigned>(upperBound); k <= ulim; k += n)
 			{
 				primeVector[k] = false;
 			}
@@ -51,4 +52,10 @@ set<int> GeneratePrimeNumersSet(int upperBound)
 	}
 
 	return primeNumbers;
+}
+
+void PrintSet(set<int> primeSet)
+{
+	ostream_iterator<int> osIt(cout, ", ");
+	copy(primeSet.begin(), primeSet.end(), osIt);
 }

@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "PrimeGenerator.h"
-#include <iostream>
 
 using namespace std;
 
@@ -13,8 +12,8 @@ int main(int argc, char* argv[])
 	{
 		primeNumbers = GeneratePrimeNumersSet(input);
 
-		cout << "calc ok";
-		cout << '\n';
+		PrintSet(primeNumbers);
+		cout << endl;
 		primeNumbers.clear();
 	}
 
