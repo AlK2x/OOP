@@ -58,3 +58,9 @@ set<int> GeneratePrimeNumersSet(int upperBound)
 
 	return primeNumbers;
 }
+
+void PrintSet(set<int> primeSet)
+{
+	ostream_iterator<int> osIt(cout, ", ");
+	copy(primeSet.begin(), primeSet.end(), osIt);
+}
