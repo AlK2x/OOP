@@ -15,7 +15,11 @@ int main(int argc, char* argv[])
 
 		cout << "calc ok";
 		cout << '\n';
-		primeNumbers.clear();
+
+		//ostream_iterator<double> outIt(cout, " ");
+		//copy(primeNumbers.begin(), primeNumbers.end(), outIt);
+
+		//primeNumbers.clear();
 	}
 
 	return 0;

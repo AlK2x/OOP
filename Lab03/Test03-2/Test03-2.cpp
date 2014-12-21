@@ -7,30 +7,32 @@ BOOST_AUTO_TEST_SUITE(StringProcessingTest)
 
 BOOST_AUTO_TEST_CASE(TestEmptyString)
 {
-	string empty("");
-	string result = RemoveExtraSpaces(empty);
-	BOOST_CHECK(result.empty());
+	BOOST_CHECK(RemoveExtraSpaces("").empty());
 }
 
 BOOST_AUTO_TEST_CASE(TestOnlySpacesString)
 {
-	string spaces("     ");
-	string result = RemoveExtraSpaces(spaces);
-	BOOST_CHECK(result.empty());
+	BOOST_CHECK(RemoveExtraSpaces("     ").empty());
 }
 
 BOOST_AUTO_TEST_CASE(TestFirstAndLastSpacesString)
 {
-	string fsString(" a ");
-	string result = RemoveExtraSpaces(fsString);
-	BOOST_CHECK_EQUAL("a", result);
+	BOOST_CHECK_EQUAL(RemoveExtraSpaces(" a "), "a");
 }
 
 BOOST_AUTO_TEST_CASE(TestMiddleSpaces)
 {
-	string fsString("a  a");
-	string result = RemoveExtraSpaces(fsString);
-	BOOST_CHECK_EQUAL("a a", result);
+	BOOST_CHECK_EQUAL(RemoveExtraSpaces("a  a"), "a a");
+}
+
+BOOST_AUTO_TEST_CASE(TestSentenceWithoutExtraSpaces)
+{
+	BOOST_CHECK_EQUAL(RemoveExtraSpaces("Sentence wothout extra spaces!"), "Sentence wothout extra spaces!");
+}
+
+BOOST_AUTO_TEST_CASE(TestSentenceWithExtraSpaces)
+{
+	BOOST_CHECK_EQUAL(RemoveExtraSpaces(" Sentence with    extra    spaces! "), "Sentence with extra spaces!");
 }
 
 BOOST_AUTO_TEST_SUITE_END()

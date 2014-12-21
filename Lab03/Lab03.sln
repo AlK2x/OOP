@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2013 for Windows Desktop
+# Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lab03-1", "Lab03\Lab03.vcxproj", "{0DD19FCF-1EFA-446C-A89A-9440EBF81A35}"
@@ -16,6 +16,12 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lab03-4", "Lab03-4\Lab03-4.vcxproj", "{B7F8ABF0-787F-4F32-A3B3-A279CB092260}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test03-4", "Test03-4\Test03-4.vcxproj", "{8DC97846-F57A-40F0-8FC8-ED5B4B89C948}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test03-3", "Test03-3\Test03-3.vcxproj", "{509A554C-1175-4555-AB64-45FD0FFD8994}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UrlParser", "UrlParser\UrlParser.vcxproj", "{E2B22D22-3097-4CD6-ABBE-0418CCBEC594}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestUrlParser", "TestUrlParser\TestUrlParser.vcxproj", "{64BEF153-F3CB-41F9-8278-5C7CF08067DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +57,18 @@ Global
 		{8DC97846-F57A-40F0-8FC8-ED5B4B89C948}.Debug|Win32.Build.0 = Debug|Win32
 		{8DC97846-F57A-40F0-8FC8-ED5B4B89C948}.Release|Win32.ActiveCfg = Release|Win32
 		{8DC97846-F57A-40F0-8FC8-ED5B4B89C948}.Release|Win32.Build.0 = Release|Win32
+		{509A554C-1175-4555-AB64-45FD0FFD8994}.Debug|Win32.ActiveCfg = Debug|Win32
+		{509A554C-1175-4555-AB64-45FD0FFD8994}.Debug|Win32.Build.0 = Debug|Win32
+		{509A554C-1175-4555-AB64-45FD0FFD8994}.Release|Win32.ActiveCfg = Release|Win32
+		{509A554C-1175-4555-AB64-45FD0FFD8994}.Release|Win32.Build.0 = Release|Win32
+		{E2B22D22-3097-4CD6-ABBE-0418CCBEC594}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E2B22D22-3097-4CD6-ABBE-0418CCBEC594}.Debug|Win32.Build.0 = Debug|Win32
+		{E2B22D22-3097-4CD6-ABBE-0418CCBEC594}.Release|Win32.ActiveCfg = Release|Win32
+		{E2B22D22-3097-4CD6-ABBE-0418CCBEC594}.Release|Win32.Build.0 = Release|Win32
+		{64BEF153-F3CB-41F9-8278-5C7CF08067DE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{64BEF153-F3CB-41F9-8278-5C7CF08067DE}.Debug|Win32.Build.0 = Debug|Win32
+		{64BEF153-F3CB-41F9-8278-5C7CF08067DE}.Release|Win32.ActiveCfg = Release|Win32
+		{64BEF153-F3CB-41F9-8278-5C7CF08067DE}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
