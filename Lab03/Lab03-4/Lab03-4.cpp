@@ -7,18 +7,15 @@ int main(int argc, char* argv[])
 {
 	int input;
 
-	set<int> primeNumbers;
+	set<unsigned> primeNumbers;
 	while (cin >> input)
 	{
 		primeNumbers = GeneratePrimeNumersSet(input);
 
-		PrintSet(primeNumbers);
-		cout << endl;
+		ostream_iterator<double> outIt(cout, " ");
+		copy(primeNumbers.begin(), primeNumbers.end(), outIt);
 
-		//ostream_iterator<double> outIt(cout, " ");
-		//copy(primeNumbers.begin(), primeNumbers.end(), outIt);
-
-		//primeNumbers.clear();
+		primeNumbers.clear();
 	}
 
 	return 0;

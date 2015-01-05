@@ -3,6 +3,6 @@
 #include <set>
 #include <vector>
 #include <iterator>
+#include <iostream>
 
-bool IsPrime(unsigned number);
-std::set<int> GeneratePrimeNumersSet(int upperBound);
+std::set<unsigned> GeneratePrimeNumersSet(int upperBound);

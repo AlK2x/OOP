@@ -4,9 +4,9 @@
 
 using namespace std;
 
-bool CheckPrimeNumbers(int bound, vector<int> prepearedNumbers)
+bool CheckPrimeNumbers(int bound, vector<unsigned> prepearedNumbers)
 {
-	set<int> reference;
+	set<unsigned> reference;
 	reference.insert(prepearedNumbers.begin(), prepearedNumbers.end());
 	return GeneratePrimeNumersSet(bound) == reference;
 }
