@@ -1,8 +1,17 @@
 #include "stdafx.h"
 #include "Car.h"
 
+using namespace std;
+
 CCar::CCar() :m_engineOn(false), m_gear(0), m_speed(0)
 {
+	m_transmissionRanges[-1] = std::make_pair(-20, 0);
+	m_transmissionRanges[0] = std::make_pair(0, 0);
+	m_transmissionRanges[1] = std::make_pair(0, 30);
+	m_transmissionRanges[2] = std::make_pair(20, 50);
+	m_transmissionRanges[3] = std::make_pair(30, 60);
+	m_transmissionRanges[4] = std::make_pair(40, 90);
+	m_transmissionRanges[5] = std::make_pair(50, 150);
 }
 
 bool CCar::IsTurnedOn() const
@@ -39,88 +48,48 @@ int CCar::GetSpeed() const
 
 bool CCar::SetGear(int gear)
 {
-	bool setGearResult = false;
-	if (m_speed == 0)
+	if (gear == 0)
 	{
-		if (gear == 0 || gear == -1 || gear == 1)
-		{
-			m_gear = gear;
-			setGearResult = true;
-		}
+		m_gear = gear;
+		return true;
 	}
-	else if (m_speed >= 20 && m_speed <= 30)
+	
+	if (m_speed < 0 && gear > 0)
 	{
-		if (gear == 0 || gear == 2 || (m_speed == 30 && gear == 3))
-		{
-			m_gear = gear;
-			setGearResult = true;
-		}
+		return false;
 	}
 
-	if (m_gear == -1)
+	SpeedInterval speedIntervalForDesiredGear = m_transmissionRanges[gear];
+	if (speedIntervalForDesiredGear.first <= abs(m_speed) && abs(speedIntervalForDesiredGear.second) >= abs(m_speed))
 	{
-		if (gear == 0)
-		{
-			m_gear = gear;
-			setGearResult = true;
-		}
-	}
-	else if (m_gear == 2)
-	{
-		if (m_speed >= 20 && m_speed <= 30 && gear == 1)
-		{
-			m_gear = gear;
-			setGearResult = true;
-		}
-		else if (m_speed >= 30 && m_speed <= 50 && gear == 3)
-		{
-			m_gear = gear;
-			setGearResult = true;
-		}
-		else if (gear == 4 && m_speed >= 40 && m_speed <= 50)
-		{
-			m_gear = gear;
-			setGearResult = true;
-		}
+		m_gear = gear;
+		return true;
 	}
 
-	return setGearResult;;
+	return false;;
 }
 
 bool CCar::SetSpeed(int speed)
 {
-	bool setSpeedResult = false;
-	if (m_gear == 1)
+	if (m_gear == 0 && std::abs(m_speed) >= std::abs(speed))
 	{
-		if (speed >= 0 && speed <= 30)
-		{
-			m_speed = speed;
-			setSpeedResult = true;
-		}
+		m_speed = speed;
+		return true;
 	}
 	else if (m_gear == 0)
 	{
-		m_speed = speed;
-		setSpeedResult = true;
-	}
-	else if (m_gear == -1)
-	{
-		if (speed <= 0 && speed >= -20)
-		{
-			m_speed = speed;
-			setSpeedResult = true;
-		}
-	}
-	else if (m_gear == 2)
-	{
-		if (speed >= 20 && speed <= 50)
-		{
-			m_speed = speed;
-			setSpeedResult = true;
-		}
+		return false;
 	}
 
-	return setSpeedResult;
+	SpeedInterval possibleSpeedInterval = m_transmissionRanges[m_gear];
+
+	if (possibleSpeedInterval.first <= speed && possibleSpeedInterval.second >= speed)
+	{
+		m_speed = speed;
+		return true;
+	}
+
+	return false;
 }
 
 Direction CCar::GetDirection() const
