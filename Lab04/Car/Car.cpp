@@ -48,6 +48,11 @@ int CCar::GetSpeed() const
 
 bool CCar::SetGear(int gear)
 {
+	if (!m_engineOn)
+	{
+		return false;
+	}
+
 	if (gear == 0)
 	{
 		m_gear = gear;
@@ -66,11 +71,16 @@ bool CCar::SetGear(int gear)
 		return true;
 	}
 
-	return false;;
+	return false;
 }
 
 bool CCar::SetSpeed(int speed)
 {
+	if (!m_engineOn)
+	{
+		return false;
+	}
+
 	if (m_gear == 0 && std::abs(m_speed) >= std::abs(speed))
 	{
 		m_speed = speed;

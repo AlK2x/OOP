@@ -41,7 +41,15 @@ void SetNewGear(CCar & car, int gear)
 {
 	if (!car.SetGear(gear))
 	{
-		cout << "Oops. Something goes wrong!\n";
+		if (!car.IsTurnedOn())
+		{
+			cout << "Car can't move with engine off!\n";
+		}
+		else
+		{
+			int speed = car.GetSpeed();
+			cout << "Can't switch to " << gear << " gear on " << speed << " speed\n";
+		}
 	}
 }
 
@@ -49,12 +57,21 @@ void SetNewSpeed(CCar & car, int speed)
 {
 	if (!car.SetSpeed(speed))
 	{
-		cout << "Oops. Something goes wrong!\n";
+		if (!car.IsTurnedOn())
+		{
+			cout << "Car can't move with engine off!\n";
+		}
+		else
+		{
+			int gear = car.GetGear();
+			cout << "Can't change speed to " << speed << " on " << gear << "-th gear\n";
+		}
 	}
 }
 
-void PlayTheGame(CCar & car)
+void PlayTheGame()
 {
+	CCar car;
 	string command;
 	cout << "Greetings and welcome... I want to play a game.\n";
 	while (true)
@@ -88,14 +105,26 @@ void PlayTheGame(CCar & car)
 			cin >> speed;
 			SetNewSpeed(car, speed);
 		}
+		cin.clear();
 	}
 }
 
+void PrintGameRule()
+{
+	cout << "Commands:" << endl;
+	cout << "        Exit - for quit" << endl;
+	cout << "        Info - print auto info" << endl;
+	cout << "        EngineOn" << endl;
+	cout << "        EngineOff" << endl;
+	cout << "        SetGear <gear>" << endl;
+	cout << "        SetSpeed <speed>" << endl;
+	cout << endl;
+}
 
 int main(int argc, char * argv[])
 {
-	CCar car;
-	PlayTheGame(car);
+	PrintGameRule();
+	PlayTheGame();
 	return 0;
 }
 
