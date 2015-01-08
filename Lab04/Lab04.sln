@@ -11,6 +11,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Car", "Car\Car.vcxproj", "{
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CarTest", "CarTest\CarTest.vcxproj", "{6B75C84B-7A1F-4659-A69C-2C497236126C}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RectangleShape", "RectangleShape\RectangleShape.vcxproj", "{B416BE28-0F28-4CB3-B653-5A61AE94FB04}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RectangleTest", "RectangleTest\RectangleTest.vcxproj", "{C2FFF7F8-EDF1-4082-940B-1922D39B45F4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -33,6 +37,14 @@ Global
 		{6B75C84B-7A1F-4659-A69C-2C497236126C}.Debug|Win32.Build.0 = Debug|Win32
 		{6B75C84B-7A1F-4659-A69C-2C497236126C}.Release|Win32.ActiveCfg = Release|Win32
 		{6B75C84B-7A1F-4659-A69C-2C497236126C}.Release|Win32.Build.0 = Release|Win32
+		{B416BE28-0F28-4CB3-B653-5A61AE94FB04}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B416BE28-0F28-4CB3-B653-5A61AE94FB04}.Debug|Win32.Build.0 = Debug|Win32
+		{B416BE28-0F28-4CB3-B653-5A61AE94FB04}.Release|Win32.ActiveCfg = Release|Win32
+		{B416BE28-0F28-4CB3-B653-5A61AE94FB04}.Release|Win32.Build.0 = Release|Win32
+		{C2FFF7F8-EDF1-4082-940B-1922D39B45F4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C2FFF7F8-EDF1-4082-940B-1922D39B45F4}.Debug|Win32.Build.0 = Debug|Win32
+		{C2FFF7F8-EDF1-4082-940B-1922D39B45F4}.Release|Win32.ActiveCfg = Release|Win32
+		{C2FFF7F8-EDF1-4082-940B-1922D39B45F4}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
