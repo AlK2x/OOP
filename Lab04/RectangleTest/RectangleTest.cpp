@@ -137,15 +137,50 @@ BOOST_AUTO_TEST_SUITE_END()
 
 struct TestIntersectRectangleFixture
 {
-	CRectangle rect1 = CRectangle(1, 1, 10, 10);
-	CRectangle rect2 = CRectangle(11, 12, 1, 1);
+	CRectangle rect1 = CRectangle(0, 0, 10, 10);
 };
 
 BOOST_FIXTURE_TEST_SUITE(TestIntersectRectangle, TestIntersectRectangleFixture)
 
 BOOST_AUTO_TEST_CASE(TestNonIntersectRectangle)
 {
+	CRectangle rect2 = CRectangle(11, 11, 10, 10);
 	BOOST_CHECK(!rect1.Intersect(rect2));
+	BOOST_CHECK_EQUAL(rect1.GetHeight(), 0);
+	BOOST_CHECK_EQUAL(rect1.GetWidth(), 0);
+}
+
+BOOST_AUTO_TEST_CASE(TestIntersectionRectangleBottomRight)
+{
+	CRectangle rect2(8, 8, 10, 10);
+
+	rect1.Intersect(rect2);
+	BOOST_CHECK_EQUAL(rect1.GetLeft(), 8);
+	BOOST_CHECK_EQUAL(rect1.GetTop(), 8);
+	BOOST_CHECK_EQUAL(rect1.GetRight(), 10);
+	BOOST_CHECK_EQUAL(rect1.GetBottom(), 10);
+}
+
+BOOST_AUTO_TEST_CASE(TestIntersectionRectangleTopLeft)
+{
+	CRectangle rect2(-8, -8, 10, 10);
+
+	rect1.Intersect(rect2);
+	BOOST_CHECK_EQUAL(rect1.GetLeft(), 0);
+	BOOST_CHECK_EQUAL(rect1.GetTop(), 0);
+	BOOST_CHECK_EQUAL(rect1.GetRight(), 2);
+	BOOST_CHECK_EQUAL(rect1.GetBottom(), 2);
+}
+
+BOOST_AUTO_TEST_CASE(TestIntersectionRectangleBottomLeft)
+{
+	CRectangle rect2(-8, 8, 10, 10);
+
+	rect1.Intersect(rect2);
+	BOOST_CHECK_EQUAL(rect1.GetLeft(), 0);
+	BOOST_CHECK_EQUAL(rect1.GetTop(), 8);
+	BOOST_CHECK_EQUAL(rect1.GetRight(), 2);
+	BOOST_CHECK_EQUAL(rect1.GetBottom(), 10);
 }
 
 BOOST_AUTO_TEST_SUITE_END();

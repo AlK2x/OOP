@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "Rectangle.h"
 
-
 CRectangle::CRectangle(int left, int top, int width, int height)
 	:m_left(left), m_top(top), m_width(0), m_height(0)
 {
@@ -104,5 +103,21 @@ void CRectangle::Scale(int sx, int sy)
 
 bool CRectangle::Intersect(CRectangle const& other)
 {
+	if (other.GetRight() < m_left || other.GetBottom() < m_top 
+		|| other.GetTop() > m_bottom || other.GetLeft() > m_right)
+	{
+		SetHeight(0);
+		SetWidth(0);
+		return false;
+	}
+	else
+	{
+		if (m_left < other.m_left) m_left = other.m_left;
+		if (m_right > other.m_right) m_right = other.m_right;
+		if (m_top < other.m_top) m_top = other.m_top;
+		if (m_bottom > other.m_bottom) m_bottom = other.m_bottom;
 
+		return true;
+	}
+	
 }
