@@ -66,7 +66,6 @@ BOOST_AUTO_TEST_CASE(TestSetTop)
 	BOOST_CHECK_EQUAL(rect.GetTop(), 2);
 	rect.SetTop(42);
 	BOOST_CHECK_EQUAL(rect.GetTop(), 42);
-	BOOST_CHECK_EQUAL(rect.GetBottom(), 62);
 }
 
 BOOST_AUTO_TEST_CASE(TestSetLeft)
@@ -74,7 +73,6 @@ BOOST_AUTO_TEST_CASE(TestSetLeft)
 	BOOST_CHECK_EQUAL(rect.GetLeft(), 1);
 	rect.SetLeft(42);
 	BOOST_CHECK_EQUAL(rect.GetLeft(), 42);
-	BOOST_CHECK_EQUAL(rect.GetRight(), 52);
 }
 
 BOOST_AUTO_TEST_CASE(TestSetRight)
@@ -82,7 +80,6 @@ BOOST_AUTO_TEST_CASE(TestSetRight)
 	BOOST_CHECK_EQUAL(rect.GetRight(), 11);
 	rect.SetRight(42);
 	BOOST_CHECK_EQUAL(rect.GetRight(), 42);
-	BOOST_CHECK_EQUAL(rect.GetLeft(), 32);
 }
 
 BOOST_AUTO_TEST_CASE(TestSetBottom)
@@ -90,7 +87,6 @@ BOOST_AUTO_TEST_CASE(TestSetBottom)
 	BOOST_CHECK_EQUAL(rect.GetBottom(), 22);
 	rect.SetBottom(42);
 	BOOST_CHECK_EQUAL(rect.GetBottom(), 42);
-	BOOST_CHECK_EQUAL(rect.GetTop(), 22);
 }
 
 BOOST_AUTO_TEST_CASE(TestMoveRectangle)

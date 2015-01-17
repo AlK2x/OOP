@@ -40,7 +40,7 @@ int CRectangle::GetLeft() const
 void CRectangle::SetLeft(int left)
 {
 	m_left = left;
-	m_right = m_left + m_width;
+	m_width = m_right - m_left;
 }
 
 int CRectangle::GetTop() const
@@ -51,7 +51,7 @@ int CRectangle::GetTop() const
 void CRectangle::SetTop(int top)
 {
 	m_top = top;
-	m_bottom = m_top + m_height;
+	m_height = m_bottom - m_top;
 }
 
 int CRectangle::GetRight() const
@@ -62,7 +62,7 @@ int CRectangle::GetRight() const
 void CRectangle::SetRight(int right)
 {
 	m_right = right;
-	m_left = m_right - m_width;
+	m_width = m_right - m_left;
 }
 
 int CRectangle::GetBottom() const
@@ -73,7 +73,7 @@ int CRectangle::GetBottom() const
 void CRectangle::SetBottom(int bottom)
 {
 	m_bottom = bottom;
-	m_top = m_bottom - m_height;
+	m_height = m_bottom - m_top;
 }
 
 int CRectangle::GetArea() const
@@ -83,14 +83,15 @@ int CRectangle::GetArea() const
 
 int CRectangle::GetPerimeter() const
 {
-	// Что делать с вырожденным прямоугольником ?
 	return 2 * m_width + 2 * m_height;
 }
 
 void CRectangle::Move(int dx, int dy)
 {
-	SetLeft(GetLeft() + dx);
-	SetTop(GetTop() + dy);
+	SetLeft(m_left + dx);
+	SetTop(m_top + dy);
+	SetBottom(m_bottom + dy);
+	SetRight(m_right + dx);
 }
 
 void CRectangle::Scale(int sx, int sy)
@@ -112,10 +113,10 @@ bool CRectangle::Intersect(CRectangle const& other)
 	}
 	else
 	{
-		if (m_left < other.m_left) m_left = other.m_left;
-		if (m_right > other.m_right) m_right = other.m_right;
-		if (m_top < other.m_top) m_top = other.m_top;
-		if (m_bottom > other.m_bottom) m_bottom = other.m_bottom;
+		if (m_left < other.m_left) SetLeft(other.m_left);
+		if (m_right > other.m_right) SetRight(other.m_right);
+		if (m_top < other.m_top) SetTop(other.m_top);
+		if (m_bottom > other.m_bottom) SetBottom(other.m_bottom);
 
 		return true;
 	}
