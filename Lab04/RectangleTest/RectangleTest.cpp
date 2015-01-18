@@ -1,5 +1,10 @@
 #include "stdafx.h"
 #include "../RectangleShape/Rectangle.h"
+#include "../RectangleShape/Canvas.h"
+#include <sstream>
+#include <string>
+
+using namespace std;
 
 BOOST_AUTO_TEST_SUITE(CreateRectangleTest)
 
@@ -177,6 +182,70 @@ BOOST_AUTO_TEST_CASE(TestIntersectionRectangleBottomLeft)
 	BOOST_CHECK_EQUAL(rect1.GetTop(), 8);
 	BOOST_CHECK_EQUAL(rect1.GetRight(), 2);
 	BOOST_CHECK_EQUAL(rect1.GetBottom(), 10);
+}
+
+BOOST_AUTO_TEST_SUITE_END();
+
+struct CanvasTestFixture
+{
+	CCanvas canva = CCanvas(10, 20);
+};
+
+BOOST_FIXTURE_TEST_SUITE(CanvasTest, CanvasTestFixture)
+
+BOOST_AUTO_TEST_CASE(TestCreateCanvas)
+{
+	BOOST_CHECK_EQUAL(canva.GetWidth(), 10);
+	BOOST_CHECK_EQUAL(canva.GetHeight(), 20);
+}
+
+BOOST_AUTO_TEST_CASE(TestOutOfRangePixel)
+{
+	BOOST_CHECK_EQUAL(canva.GetPixel(0, 0), ' ');
+	BOOST_CHECK_EQUAL(canva.GetPixel(9, 19), ' ');
+	BOOST_CHECK_EQUAL(canva.GetPixel(9, 0), ' ');
+	BOOST_CHECK_EQUAL(canva.GetPixel(0, 19), ' ');
+	BOOST_CHECK_EQUAL(canva.GetPixel(10, 0), ' ');
+}
+
+BOOST_AUTO_TEST_CASE(TestSetCanvasPixel)
+{
+	canva.SetPixel(0, 0, '@');
+	BOOST_CHECK_EQUAL(canva.GetPixel(0, 0), '@');
+	canva.SetPixel(1, 1, 0x1F);
+	BOOST_CHECK_EQUAL(canva.GetPixel(1, 1), ' ');
+}
+
+BOOST_AUTO_TEST_CASE(TestFillCanvas)
+{
+	canva.Clear('@');
+	BOOST_CHECK_EQUAL(canva.GetPixel(0,0), '@');
+	BOOST_CHECK_EQUAL(canva.GetPixel(9, 19), '@');
+	BOOST_CHECK_EQUAL(canva.GetPixel(9, 0), '@');
+	BOOST_CHECK_EQUAL(canva.GetPixel(0, 19), '@');
+
+	canva.Clear();
+	BOOST_CHECK_EQUAL(canva.GetPixel(0, 0), ' ');
+	BOOST_CHECK_EQUAL(canva.GetPixel(9, 19), ' ');
+	BOOST_CHECK_EQUAL(canva.GetPixel(9, 0), ' ');
+	BOOST_CHECK_EQUAL(canva.GetPixel(0, 19), ' ');
+
+	canva.Clear(0x1F);
+	BOOST_CHECK_EQUAL(canva.GetPixel(0, 0), ' ');
+	BOOST_CHECK_EQUAL(canva.GetPixel(9, 19), ' ');
+	BOOST_CHECK_EQUAL(canva.GetPixel(9, 0), ' ');
+	BOOST_CHECK_EQUAL(canva.GetPixel(0, 19), ' ');
+}
+
+BOOST_AUTO_TEST_CASE(TestWirteCanvas)
+{
+	stringstream ss;
+	canva.Clear('1');
+	canva.SetPixel(0, 0, '2');
+	canva.Write(ss);
+	string first;
+	ss >> first;
+	BOOST_CHECK_EQUAL(first, "2111111111");
 }
 
 BOOST_AUTO_TEST_SUITE_END();

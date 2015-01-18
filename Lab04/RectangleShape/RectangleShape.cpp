@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Rectangle.h"
+#include "Canvas.h"
 #include <string>
 #include <fstream>
 #include <exception>
@@ -70,6 +71,30 @@ CRectangle IntersectRectangles(CRectangle & rect1, CRectangle & rect2)
 	return rect1;
 }
 
+void FillRectangle(CRectangle const& rect, char code, CCanvas & canvas)
+{
+	int left = rect.GetLeft();
+	int top = rect.GetTop();
+
+	for (unsigned y = top; y < top + rect.GetHeight(); ++y)
+	{
+		for (unsigned x = left; x < left + rect.GetWidth(); ++x)
+		{
+			canvas.SetPixel(x, y, code);
+		}
+	}
+}
+
+void WriteCanvasToFile(string filename, CCanvas const& canva)
+{
+	ofstream ost(filename);
+	if (!ost)
+	{
+		throw runtime_error("Can't create file " + filename);
+	}
+	canva.Write(ost);
+}
+
 int main(int argc, char * argv[])
 {
 	if (argc < 3)
@@ -82,10 +107,18 @@ int main(int argc, char * argv[])
 	{
 		CRectangle firstRect = CreateRectangleFromFile(argv[1]);
 		CRectangle secondRect = CreateRectangleFromFile(argv[2]);
+		CCanvas canva(100, 100);
+
+		FillRectangle(firstRect, '+', canva);
+		FillRectangle(secondRect, '-', canva);
 
 		PrintRectangle(firstRect, "Rectangle 1");
 		PrintRectangle(secondRect, "Rectangle 2");
-		PrintRectangle(IntersectRectangles(firstRect, secondRect), "Intersection rectangle");
+		CRectangle intersectRectangle = IntersectRectangles(firstRect, secondRect);
+		PrintRectangle(intersectRectangle, "Intersection rectangle");
+		
+		FillRectangle(intersectRectangle, '#', canva);
+		argc >= 3 ? WriteCanvasToFile(argv[3], canva) : canva.Write(cout);
 	}
 	catch (logic_error const & e)
 	{
