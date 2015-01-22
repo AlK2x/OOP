@@ -139,7 +139,6 @@ BOOST_AUTO_TEST_CASE(SetGearTo5)
 BOOST_AUTO_TEST_CASE(SetFirstGearSpeedTest)
 {
 	car.SetGear(1);
-	BOOST_CHECK(!car.SetSpeed(-1));
 	BOOST_CHECK(car.GetSpeed() == 0);
 	int i = 0;
 	for (; i < 31; ++i)
@@ -156,18 +155,18 @@ BOOST_AUTO_TEST_CASE(SetFirstGearSpeedTest)
 BOOST_AUTO_TEST_CASE(SetBackGearSpeedTest)
 {
 	BOOST_CHECK(car.SetGear(-1));
-	BOOST_CHECK(!car.SetSpeed(1));
-	BOOST_CHECK(car.GetSpeed() == 0);
-	int i = 0;
-	for (; i > -21; --i)
+	BOOST_CHECK(car.SetSpeed(1));
+	BOOST_CHECK_EQUAL(car.GetSpeed(), 1);
+	unsigned i = 0;
+	for (; i < 21; ++i)
 	{
 		BOOST_CHECK(car.SetSpeed(i));
-		BOOST_CHECK(car.GetSpeed() == i);
+		BOOST_CHECK_EQUAL(car.GetSpeed(), i);
 	}
 
 	BOOST_CHECK(car.GetDirection() == Direction::BACKWARD);
 	BOOST_CHECK(!car.SetSpeed(i));
-	BOOST_CHECK(car.GetSpeed() == i + 1);
+	BOOST_CHECK_EQUAL(car.GetSpeed(), i - 1);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
@@ -227,7 +226,6 @@ BOOST_AUTO_TEST_CASE(TestStopCar)
 BOOST_AUTO_TEST_CASE(TestSetForbiddenSpeedAndGear)
 {
 	BOOST_CHECK(!car.SetSpeed(31));
-	BOOST_CHECK(!car.SetSpeed(-1));
 	BOOST_CHECK(!car.SetGear(2));
 	BOOST_CHECK(!car.SetGear(3));
 	BOOST_CHECK(!car.SetGear(4));
@@ -264,14 +262,14 @@ BOOST_FIXTURE_TEST_SUITE(BackGearTest, BackGearTestFixture)
 
 BOOST_AUTO_TEST_CASE(TestBackSpeed)
 {
-	BOOST_CHECK(car.SetSpeed(-1));
-	BOOST_CHECK(car.SetSpeed(-20));
-	BOOST_CHECK(!car.SetSpeed(-21));
+	BOOST_CHECK(car.SetSpeed(1));
+	BOOST_CHECK(car.SetSpeed(20));
+	BOOST_CHECK(!car.SetSpeed(21));
 }
 
 BOOST_AUTO_TEST_CASE(TestSwithcGear)
 {
-	BOOST_CHECK(car.SetSpeed(-20));
+	BOOST_CHECK(car.SetSpeed(20));
 	BOOST_CHECK(car.SetGear(0));
 	BOOST_CHECK(!car.SetGear(1));
 	BOOST_CHECK(car.SetSpeed(0));
@@ -280,10 +278,10 @@ BOOST_AUTO_TEST_CASE(TestSwithcGear)
 
 BOOST_AUTO_TEST_CASE(TestIncreaseNegativeSpeedOnNeutral)
 {
-	car.SetSpeed(-10);
+	car.SetSpeed(10);
 	BOOST_CHECK(car.SetGear(0));
-	BOOST_CHECK(!car.SetSpeed(-11));
-	BOOST_CHECK_EQUAL(car.GetSpeed(), -10);
+	BOOST_CHECK(!car.SetSpeed(11));
+	BOOST_CHECK_EQUAL(car.GetSpeed(), 10);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
@@ -306,11 +304,11 @@ BOOST_AUTO_TEST_CASE(TestSecondGearSpeedLimit)
 {
 	BOOST_CHECK(!car.SetSpeed(19));
 	BOOST_CHECK(!car.SetSpeed(51));
-	BOOST_CHECK(car.GetSpeed() == 20);
+	BOOST_CHECK_EQUAL(car.GetSpeed(), 20);
 	BOOST_CHECK(car.SetSpeed(21));
-	BOOST_CHECK(car.GetSpeed() == 21);
+	BOOST_CHECK_EQUAL(car.GetSpeed(), 21);
 	BOOST_CHECK(car.SetSpeed(50));
-	BOOST_CHECK(car.GetSpeed() == 50);
+	BOOST_CHECK_EQUAL(car.GetSpeed(), 50);
 }
 
 BOOST_AUTO_TEST_CASE(TestSpeedUpAndSwithcToThirdGear)

@@ -18,16 +18,19 @@ public:
 	Direction GetDirection() const;
 
 	bool SetGear(int);
-	bool SetSpeed(int);
+	bool SetSpeed(unsigned);
 
 private:
 	typedef int Gear;
-	typedef std::pair<int, int> SpeedInterval;
+	typedef std::pair<unsigned, unsigned> SpeedInterval;
 	typedef std::unordered_map<Gear, SpeedInterval> TransmissionRanges;
 
+	void UpdateDirection();
+	static const CCar::TransmissionRanges m_transmissionRanges;
+
 	bool m_engineOn;
-	int m_speed;
+	unsigned m_speed;
+	Direction m_direction;
 	Gear m_gear;
-	TransmissionRanges m_transmissionRanges;
 };
 
