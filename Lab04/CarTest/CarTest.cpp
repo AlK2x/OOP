@@ -1,6 +1,8 @@
 #include "stdafx.h"
+#include <functional>
 #include "../Car/Car.h"
 using namespace std;
+using namespace std::placeholders;
 
 /*
 	Изначально созданный автомобиль
@@ -56,16 +58,32 @@ using namespace std;
 		переключится на 4-ю при скорости 50-90
 */
 
+bool CarStateIsNotChangedOn(CCar const& car, function<bool(CCar & car)> const& fn)
+{
+	CCar clone(car);
+	fn(clone);
+	return
+		(car.IsTurnedOn() == clone.IsTurnedOn()) &&
+		(car.GetGear() == clone.GetGear()) &&
+		(car.GetSpeed() == clone.GetSpeed()) &&
+		(car.GetDirection() == clone.GetDirection());
+}
+
 struct JustCreatedCarFixture
 {
 	CCar car;
+
+	bool CheckCarStateIsNotChangedOn(function<bool(CCar & car)> const& fn)
+	{
+		return CarStateIsNotChangedOn(car, fn);
+	}
 };
 
 BOOST_FIXTURE_TEST_SUITE(JustCreatedCar, JustCreatedCarFixture)
 
 BOOST_AUTO_TEST_CASE(IsEngineOff)
 {
-	BOOST_CHECK(!car.IsTurnedOn());
+	BOOST_CHECK(CheckCarStateIsNotChangedOn([](CCar & car) { return car.IsTurnedOn(); }));
 }
 
 BOOST_AUTO_TEST_CASE(IsEngineOn)
@@ -83,8 +101,8 @@ BOOST_AUTO_TEST_CASE(TestCarPropertiesJustAfterEngineTurnOn)
 
 BOOST_AUTO_TEST_CASE(CarCanNotMoveWithEngineOff)
 {
-	BOOST_CHECK(!car.SetGear(1));
-	BOOST_CHECK(!car.SetSpeed(1));
+	BOOST_CHECK(CheckCarStateIsNotChangedOn(bind(&CCar::SetGear, _1, 1)));
+	BOOST_CHECK(CheckCarStateIsNotChangedOn(bind(&CCar::SetSpeed, _1, 1)));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
@@ -95,6 +113,11 @@ struct JustAfterEngineOnCarFixture
 	JustAfterEngineOnCarFixture()
 	{
 		car.TurnOnEngine();
+	}
+
+	bool CheckCarStateIsNotChangedOn(function<bool(CCar & car)> const& fn)
+	{
+		return CarStateIsNotChangedOn(car, fn);
 	}
 };
 
@@ -118,22 +141,10 @@ BOOST_AUTO_TEST_CASE(SetGearTo1)
 
 BOOST_AUTO_TEST_CASE(SetGearTo2)
 {
-	BOOST_CHECK(!car.SetGear(2));
-}
-
-BOOST_AUTO_TEST_CASE(SetGearTo3)
-{
-	BOOST_CHECK(!car.SetGear(3));
-}
-
-BOOST_AUTO_TEST_CASE(SetGearTo4)
-{
-	BOOST_CHECK(!car.SetGear(4));
-}
-
-BOOST_AUTO_TEST_CASE(SetGearTo5)
-{
-	BOOST_CHECK(!car.SetGear(5));
+	BOOST_CHECK(CheckCarStateIsNotChangedOn(bind(&CCar::SetGear, _1, 2)));
+	BOOST_CHECK(CheckCarStateIsNotChangedOn(bind(&CCar::SetGear, _1, 3)));
+	BOOST_CHECK(CheckCarStateIsNotChangedOn(bind(&CCar::SetGear, _1, 4)));
+	BOOST_CHECK(CheckCarStateIsNotChangedOn(bind(&CCar::SetGear, _1, 5)));
 }
 
 BOOST_AUTO_TEST_CASE(SetFirstGearSpeedTest)
@@ -148,7 +159,7 @@ BOOST_AUTO_TEST_CASE(SetFirstGearSpeedTest)
 	}
 
 	BOOST_CHECK(car.GetDirection() == Direction::STRAIGHT);
-	BOOST_CHECK(!car.SetSpeed(i));
+	BOOST_CHECK(CheckCarStateIsNotChangedOn(bind(&CCar::SetSpeed, _1, i)));
 	BOOST_CHECK(car.GetSpeed() == i - 1);
 }
 
@@ -165,8 +176,7 @@ BOOST_AUTO_TEST_CASE(SetBackGearSpeedTest)
 	}
 
 	BOOST_CHECK(car.GetDirection() == Direction::BACKWARD);
-	BOOST_CHECK(!car.SetSpeed(i));
-	BOOST_CHECK_EQUAL(car.GetSpeed(), i - 1);
+	BOOST_CHECK(CheckCarStateIsNotChangedOn(bind(&CCar::SetSpeed, _1, i)));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
@@ -179,14 +189,20 @@ struct FirstGearTestFixture
 		car.TurnOnEngine();
 		car.SetGear(1);
 	}
+
+	bool CheckCarStateIsNotChangedOn(function<bool(CCar & car)> const& fn)
+	{
+		return CarStateIsNotChangedOn(car, fn);
+	}
 };
 
 BOOST_FIXTURE_TEST_SUITE(FirstGearTest, FirstGearTestFixture)
 
 BOOST_AUTO_TEST_CASE(TestSpeedUpAndSwithcToSecondGear)
 {
-	car.SetSpeed(19);
+	BOOST_CHECK(car.SetSpeed(19));
 	BOOST_CHECK(!car.SetGear(2));
+	BOOST_CHECK(CheckCarStateIsNotChangedOn(bind(&CCar::SetGear, _1, 2)));
 	BOOST_CHECK_EQUAL(car.GetGear(), 1);
 
 	BOOST_CHECK(car.SetSpeed(20));
@@ -198,17 +214,18 @@ BOOST_AUTO_TEST_CASE(TestSpeedUpAndSwithcToThirdGear)
 {
 	car.SetSpeed(29);
 	BOOST_CHECK(!car.SetGear(3));
-	BOOST_CHECK(car.GetGear() == 1);
+	BOOST_CHECK(CheckCarStateIsNotChangedOn(bind(&CCar::SetGear, _1, 3)));
+	BOOST_CHECK_EQUAL(car.GetGear(), 1);
 
 	car.SetSpeed(30);
 	BOOST_CHECK(car.SetGear(3));
-	BOOST_CHECK(car.GetGear() == 3);
+	BOOST_CHECK_EQUAL(car.GetGear(), 3);
 }
 
 BOOST_AUTO_TEST_CASE(TestStopCar)
 {
 	car.SetSpeed(30);
-	BOOST_CHECK(!car.TurnOffEngine());
+	BOOST_CHECK(CheckCarStateIsNotChangedOn([](CCar & car){ return car.TurnOffEngine(); }));
 	BOOST_CHECK(car.IsTurnedOn());
 
 	car.SetSpeed(0);
@@ -217,7 +234,7 @@ BOOST_AUTO_TEST_CASE(TestStopCar)
 
 	car.SetGear(0);
 	BOOST_CHECK(car.TurnOffEngine());
-	BOOST_CHECK(!car.IsTurnedOn());
+	BOOST_CHECK(CheckCarStateIsNotChangedOn([](CCar & car){ return car.IsTurnedOn(); }));
 	BOOST_CHECK(car.GetGear() == 0);
 	BOOST_CHECK(car.GetSpeed() == 0);
 	BOOST_CHECK(car.GetDirection() == Direction::IN_PLACE);
@@ -225,20 +242,23 @@ BOOST_AUTO_TEST_CASE(TestStopCar)
 
 BOOST_AUTO_TEST_CASE(TestSetForbiddenSpeedAndGear)
 {
-	BOOST_CHECK(!car.SetSpeed(31));
-	BOOST_CHECK(!car.SetGear(2));
-	BOOST_CHECK(!car.SetGear(3));
-	BOOST_CHECK(!car.SetGear(4));
-	BOOST_CHECK(!car.SetGear(5));
+
+	BOOST_CHECK(CheckCarStateIsNotChangedOn(bind(&CCar::SetSpeed, _1, 31)));
+	BOOST_CHECK(CheckCarStateIsNotChangedOn(bind(&CCar::SetGear, _1, 2)));
+	BOOST_CHECK(CheckCarStateIsNotChangedOn(bind(&CCar::SetGear, _1, 3)));
+	BOOST_CHECK(CheckCarStateIsNotChangedOn(bind(&CCar::SetGear, _1, 4)));
+	BOOST_CHECK(CheckCarStateIsNotChangedOn(bind(&CCar::SetGear, _1, 5)));
 
 	car.SetSpeed(10);
 	BOOST_CHECK(!car.SetGear(-1));
+	BOOST_CHECK(CheckCarStateIsNotChangedOn(bind(&CCar::SetGear, _1, -1)));
 }
 
 BOOST_AUTO_TEST_CASE(TestBackGear)
 {
 	car.SetSpeed(10);
 	BOOST_CHECK(!car.SetGear(-1));
+	BOOST_CHECK(CheckCarStateIsNotChangedOn([](CCar & car){ return car.SetGear(-1); }));
 	BOOST_CHECK(car.GetGear() == 1);
 
 	car.SetSpeed(0);

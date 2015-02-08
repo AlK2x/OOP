@@ -15,6 +15,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RectangleShape", "Rectangle
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RectangleTest", "RectangleTest\RectangleTest.vcxproj", "{C2FFF7F8-EDF1-4082-940B-1922D39B45F4}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FileWrap", "FileWrap\FileWrap.vcxproj", "{28135F78-D4CE-4A42-AFBA-F7F45BD62437}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FileWrapTest", "FileWrapTest\FileWrapTest.vcxproj", "{F40C67AB-C41E-428A-9EF5-D6C2F50B6741}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -45,6 +49,14 @@ Global
 		{C2FFF7F8-EDF1-4082-940B-1922D39B45F4}.Debug|Win32.Build.0 = Debug|Win32
 		{C2FFF7F8-EDF1-4082-940B-1922D39B45F4}.Release|Win32.ActiveCfg = Release|Win32
 		{C2FFF7F8-EDF1-4082-940B-1922D39B45F4}.Release|Win32.Build.0 = Release|Win32
+		{28135F78-D4CE-4A42-AFBA-F7F45BD62437}.Debug|Win32.ActiveCfg = Debug|Win32
+		{28135F78-D4CE-4A42-AFBA-F7F45BD62437}.Debug|Win32.Build.0 = Debug|Win32
+		{28135F78-D4CE-4A42-AFBA-F7F45BD62437}.Release|Win32.ActiveCfg = Release|Win32
+		{28135F78-D4CE-4A42-AFBA-F7F45BD62437}.Release|Win32.Build.0 = Release|Win32
+		{F40C67AB-C41E-428A-9EF5-D6C2F50B6741}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F40C67AB-C41E-428A-9EF5-D6C2F50B6741}.Debug|Win32.Build.0 = Debug|Win32
+		{F40C67AB-C41E-428A-9EF5-D6C2F50B6741}.Release|Win32.ActiveCfg = Release|Win32
+		{F40C67AB-C41E-428A-9EF5-D6C2F50B6741}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -3,7 +3,7 @@
 
 using namespace std;
 
-const CCar::TransmissionRanges CCar::m_transmissionRanges = {
+CCar::TransmissionRanges CCar::m_transmissionRanges( {
 	{ -1, { 0, 20 } },
 	{ 0, { 0, 0 } },
 	{ 1, { 0, 30 } },
@@ -11,7 +11,7 @@ const CCar::TransmissionRanges CCar::m_transmissionRanges = {
 	{ 3, { 30, 60 } },
 	{ 4, { 40, 90 } },
 	{ 5, { 50, 150 } }
-};
+});
 
 CCar::CCar() :m_engineOn(false), m_gear(0), m_speed(0), m_direction(Direction::IN_PLACE)
 {

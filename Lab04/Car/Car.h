@@ -26,7 +26,7 @@ private:
 	typedef std::unordered_map<Gear, SpeedInterval> TransmissionRanges;
 
 	void UpdateDirection();
-	static const CCar::TransmissionRanges m_transmissionRanges;
+	static CCar::TransmissionRanges m_transmissionRanges;
 
 	bool m_engineOn;
 	unsigned m_speed;
