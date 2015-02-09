@@ -83,6 +83,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Shapes\Compound.h" />
     <ClInclude Include="..\Shapes\Cone.h" />
     <ClInclude Include="..\Shapes\Cylinder.h" />
     <ClInclude Include="..\Shapes\Parallelepiped.h" />
@@ -92,11 +93,13 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Shapes\Compound.cpp" />
     <ClCompile Include="..\Shapes\Cone.cpp" />
     <ClCompile Include="..\Shapes\Cylinder.cpp" />
     <ClCompile Include="..\Shapes\Parallelepiped.cpp" />
     <ClCompile Include="..\Shapes\SolidBody.cpp" />
     <ClCompile Include="..\Shapes\Sphere.cpp" />
+    <ClCompile Include="CompositeTest.cpp" />
     <ClCompile Include="ConeTest.cpp" />
     <ClCompile Include="ParallelepipedTest.cpp" />
     <ClCompile Include="ShapesTest.cpp" />

@@ -6,6 +6,12 @@ CCompound::CCompound()
 {
 }
 
+std::string CCompound::ToString() const
+{
+	std::stringstream ss;
+	ss << "";
+	return ss.str();
+}
 
 double CCompound::GetVolume() const
 {
@@ -33,7 +39,22 @@ double CCompound::GetWeight() const
 
 bool CCompound::Add(const pBody& body)
 {
+	CCompound * comp = dynamic_cast<CCompound*>(&*body);
+	if (comp != 0)
+	{
+		if (HasAddedObjectPointerToThis(*comp))
+		{
+			return false;
+		}
+	}
 
+	m_compound.push_back(CCompound::pBody(body));
+	return true;
+}
+
+std::vector<CCompound::pBody> CCompound::GetObjects() const
+{
+	return m_compound;
 }
 
 bool CCompound::HasAddedObjectPointerToThis(const CCompound& compound)
