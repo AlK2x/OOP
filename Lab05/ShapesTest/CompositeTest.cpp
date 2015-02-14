@@ -4,6 +4,13 @@
 #include "../Shapes/Parallelepiped.h"
 #include "../Shapes/Cylinder.h"
 
+struct CompoundFixture
+{
+
+};
+
+BOOST_FIXTURE_TEST_SUITE(CompoundBodyTest, CompoundFixture)
+
 BOOST_AUTO_TEST_CASE(AddCompsiteToComposite)
 {
 	CCompound * compound = new CCompound();
@@ -15,3 +22,5 @@ BOOST_AUTO_TEST_CASE(AddCompsiteToComposite)
 	CCompound::pBody comp(compound);
 	BOOST_CHECK(!compound->Add(comp));
 }
+
+BOOST_AUTO_TEST_SUITE_END()

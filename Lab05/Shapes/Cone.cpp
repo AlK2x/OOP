@@ -12,11 +12,6 @@ double CCone::GetVolume() const
 	return 3.14 * m_radius * m_radius * m_height / 3;
 }
 
-double CCone::GetWeight() const
-{
-	return GetVolume() * m_density;
-}
-
 std::string CCone::ToString() const
 {
 	std::stringstream ss;

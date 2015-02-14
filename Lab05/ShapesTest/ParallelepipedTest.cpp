@@ -4,7 +4,6 @@
 bool CompareParallelepipedState(CParallelepiped const & p1, CParallelepiped const & p2)
 {
 	return p1.GetHeight() == p2.GetHeight() &&
-		p1.GetHeight() == p2.GetHeight() &&
 		p1.GetDepth() == p2.GetDepth() &&
 		p1.GetDensity() == p2.GetDensity();
 }

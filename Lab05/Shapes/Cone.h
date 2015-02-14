@@ -8,7 +8,6 @@ public:
 	
 	virtual std::string ToString() const;
 	virtual double GetVolume() const;
-	virtual double GetWeight() const;
 
 	unsigned GetRadius() const;
 	unsigned GetHeight() const;

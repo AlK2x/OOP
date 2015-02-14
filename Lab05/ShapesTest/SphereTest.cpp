@@ -6,7 +6,6 @@
 
 
 struct SphereFixture
-
 {
 	CSphere s = CSphere(3, 10);
 	const CBody & sAsBody = s;
@@ -24,7 +23,9 @@ BOOST_AUTO_TEST_CASE(RadiusPassedToConstructor)
 
 BOOST_AUTO_TEST_CASE(CompareTwoSperes)
 {
-	BOOST_CHECK(CSphere(2, 2) == CSphere(2, 2));
+	CSphere s1(2, 2);
+	CSphere s2(2, 2);
+	BOOST_CHECK(s1 == s2);
 }
 
 BOOST_AUTO_TEST_CASE(ChangeRadius)

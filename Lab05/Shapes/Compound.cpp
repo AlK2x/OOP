@@ -9,7 +9,12 @@ CCompound::CCompound()
 std::string CCompound::ToString() const
 {
 	std::stringstream ss;
-	ss << "";
+	ss << "Compound:\n";
+	for (auto& body : m_compound)
+	{
+		ss << "  " << body->ToString() << '\n';
+	}
+	ss << "END Compound.\n";
 	return ss.str();
 }
 
@@ -55,6 +60,22 @@ bool CCompound::Add(const pBody& body)
 std::vector<CCompound::pBody> CCompound::GetObjects() const
 {
 	return m_compound;
+}
+
+unsigned CCompound::GetDensity() const
+{
+	unsigned density = 0;
+
+	unsigned count = 0;
+	for (auto& body : m_compound)
+	{
+		density += body->GetDensity();
+		++count;
+	}
+
+	density /= count;
+
+	return density;
 }
 
 bool CCompound::HasAddedObjectPointerToThis(const CCompound& compound)
