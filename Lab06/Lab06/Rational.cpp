@@ -48,6 +48,24 @@ CRational& CRational::operator+=(CRational const& rhs)
 	return *this;
 }
 
+CRational& CRational::operator-=(CRational const& rhs)
+{
+	Assign(m_numerator * rhs.m_denominator -
+		rhs.m_numerator * m_denominator,
+		m_denominator * rhs.m_denominator);
+	return *this;
+}
+
+CRational const CRational::operator-() const
+{
+	return CRational(-m_numerator, m_denominator);
+}
+
+CRational const CRational::operator+() const
+{
+	return CRational(m_numerator, m_denominator);
+}
+
 void CRational::Assign(int numerator, int denominator)
 {
 	if (denominator == 0)
@@ -70,6 +88,12 @@ CRational& CRational::operator*=(CRational const & rhs)
 	return *this;
 }
 
+CRational& CRational::operator/=(CRational const & rhs)
+{
+	Assign(m_numerator * rhs.m_denominator, m_denominator * rhs.m_numerator);
+	return *this;
+}
+
 CRational const operator+(CRational lhs,
 	                      CRational const & rhs)
 {
@@ -80,4 +104,43 @@ CRational const operator*(CRational lhs,
 	CRational const & rhs)
 {
 	return lhs *= rhs;
+}
+
+CRational const operator-(CRational lhs, CRational const & rhs)
+{
+	return lhs -= rhs;
+}
+
+CRational const operator/(CRational lhs, CRational const & rhs)
+{
+	return lhs /= rhs;
+}
+
+std::ostream& operator<<(std::ostream & ost, CRational const & rhs)
+{
+	ost << rhs.GetNumerator() << '/' << rhs.GetDenominator();
+	return ost;
+}
+
+std::istream& operator>>(std::istream & ist, CRational & rhs)
+{
+	std::streamoff pos = ist.tellg();
+
+	int numerator, denominator;
+	if (ist >> numerator)
+	{
+		if (ist.get() == '/' && (ist >> denominator))
+		{
+			rhs = CRational(numerator, denominator);
+		}
+		else
+		{
+			rhs = CRational(numerator);
+		}
+		return ist;
+	}
+
+	ist.seekg(pos);
+	ist.setstate(std::ios_base::failbit | ist.rdstate());
+	return ist;
 }

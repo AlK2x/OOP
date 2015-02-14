@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "Rational.h"
-
+#include <sstream>
 
 BOOST_AUTO_TEST_SUITE(Rational)
 
@@ -163,6 +163,53 @@ BOOST_AUTO_TEST_CASE(MultiplicationWithInteger)
 {
 	BOOST_CHECK(CRational(1, 2) * 3 == CRational(3, 2));
 	BOOST_CHECK(3 * CRational(1, 2) == CRational(3, 2));
+}
+
+BOOST_AUTO_TEST_CASE(ChangeSign)
+{
+	BOOST_CHECK(-CRational(1, 2) == CRational(-1, 2));
+	BOOST_CHECK(-CRational(-1, 2) == CRational(1, 2));
+	BOOST_CHECK(+CRational(1, 3) == CRational(1, 3));
+}
+
+BOOST_AUTO_TEST_CASE(Substraction)
+{
+	BOOST_CHECK((CRational(1, 3) - CRational(1, 3)) == CRational(0));
+	BOOST_CHECK((CRational(2, 3) - CRational(1, 3)) == CRational(1, 3));
+	BOOST_CHECK((CRational(5, 3) - CRational(1)) == CRational(2, 3));
+
+	CRational r(41, 42);
+	BOOST_CHECK(std::addressof(r -= CRational(1, 2)) == std::addressof(r));
+	BOOST_CHECK(r == CRational(10, 21));
+}
+
+BOOST_AUTO_TEST_CASE(Division)
+{
+	BOOST_CHECK((CRational(1, 2) / CRational(1, 2)) == CRational(1));
+
+	CRational r(2, 5);
+	// Оператор *= возвращает ссылку на левый операнд
+	BOOST_CHECK_EQUAL(&(r /= CRational(5, 4)), &r);
+	// Результат должен быть сохранен в левом операнде
+	BOOST_CHECK(r == CRational(8, 25));
+	BOOST_CHECK((CRational(-2, 5) / CRational(5, 4)) == CRational(-8, 25));
+}
+
+BOOST_AUTO_TEST_CASE(OstreamOperator)
+{
+	std::stringstream ss;
+	CRational r(41, 42);
+	ss << r;
+	BOOST_CHECK_EQUAL(ss.str(), "41/42");
+}
+
+BOOST_AUTO_TEST_CASE(IstreamOperator)
+{
+	CRational r;
+	std::stringstream ss;
+	ss << "41/42";
+	ss >> r;
+	BOOST_CHECK(r == CRational(41, 42));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 
 unsigned GCD(unsigned x, unsigned y);
 
@@ -18,8 +19,13 @@ public:
 	bool operator!=(CRational const & rhs)const;
 
 	CRational& operator+=(CRational const & rhs);
+	CRational& operator-=(CRational const & rhs);
 	
 	CRational& operator*=(CRational const & rhs);
+	CRational& operator/=(CRational const & rhs);
+
+	CRational const operator-() const;
+	CRational const operator+() const;
 
 private:
 	void Assign(int numerator, int denominator);
@@ -31,3 +37,8 @@ private:
 
 CRational const operator+(CRational lhs, CRational const & rhs);
 CRational const operator*(CRational lhs, CRational const & rhs);
+CRational const operator-(CRational lhs, CRational const & rhs);
+CRational const operator/(CRational lhs, CRational const & rhs);
+
+std::ostream& operator<<(std::ostream & ost, CRational const & rhs);
+std::istream& operator>>(std::istream & ist, CRational & rhs);
