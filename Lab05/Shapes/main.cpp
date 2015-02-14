@@ -126,7 +126,5 @@ int main(int argc, char * argv[])
 	cout << "Body with max weight: " << (*maxWeightBody)->ToString() << '\n';
 	cout << "Body with max weight in water: " << (*maxWeightInWater)->ToString() << '\n';
 
-	system("pause");
-
 	return 0;
 }
