@@ -120,11 +120,19 @@ int main(int argc, char * argv[])
 
 	cout << "Ok. computing ... " << '\n';
 
-	auto maxWeightBody = max_element(shapes.begin(), shapes.end(), CompareWeight);
-	auto maxWeightInWater = max_element(shapes.begin(), shapes.end(), CompareWeightInWater);
+	if (!shapes.empty())
+	{
+		auto maxWeightBody = max_element(shapes.begin(), shapes.end(), CompareWeight);
+		auto maxWeightInWater = max_element(shapes.begin(), shapes.end(), CompareWeightInWater);
 
-	cout << "Body with max weight: " << (*maxWeightBody)->ToString() << '\n';
-	cout << "Body with max weight in water: " << (*maxWeightInWater)->ToString() << '\n';
+		cout << "Body with max weight: " << (*maxWeightBody)->ToString() << '\n';
+		cout << "Body with max weight in water: " << (*maxWeightInWater)->ToString() << '\n';
+	}
+	else
+	{
+		cout << "There are no shapes\n";
+	}
+	
 
 	return 0;
 }
